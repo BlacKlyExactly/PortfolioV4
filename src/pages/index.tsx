@@ -56,7 +56,7 @@ const LandingDecorations = styled.span`
     display: none;
     width: 44.896vw;
     height: 56.250vw;
-    background: linear-gradient(${Pink}, ${Coral});
+    background: linear-gradient(${Coral}, ${Pink});
     border-radius: 26.042vw 0 0 41.667vw;
 
     &::after {
