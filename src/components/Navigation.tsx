@@ -28,6 +28,26 @@ const Logo = styled.span`
     margin-left: 29px;
     z-index: 100;
 
+    &:hover{
+        &::after{
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
+
+    &::after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 20%;
+        top: 110%;
+        left: 0;
+        background: white;
+        transform: scaleX(0);
+        transition: transform 0.2s;
+        transform-origin: right;
+    }
+
     @media screen and (min-width: 800px){
         margin-left: 3.5vw;
     }
@@ -51,11 +71,32 @@ const Selects = styled.ul`
 `;
 
 const Select = styled.li`
+    position: relative;
     display: none;
     font-size: 25px;
     color: white;
     font-weight: 850;
     margin: 0 19px;
+
+    &:hover{
+        &::after{
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
+
+    &::after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 20%;
+        top: 110%;
+        left: 0;
+        background: white;
+        transform: scaleX(0);
+        transition: transform 0.2s;
+        transform-origin: right;
+    }
 
     @media screen and (min-width: 800px){
         font-size: 1.502vw;

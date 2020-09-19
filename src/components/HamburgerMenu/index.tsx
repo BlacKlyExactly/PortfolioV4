@@ -68,8 +68,9 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ selects }) => {
     const panel = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        timeline.from(panel.current, { x: "100%", duration: 0.2 })
-        .reverse();
+        timeline.from(panel.current, { x: "100%", duration: 0.5, ease: "expo.inOut" })
+                .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3, ease: "expo.inOut" })
+                .reverse();
     }, [ timeline ]);
 
     const handleOpen = () => timeline.reversed(!timeline.reversed());

@@ -161,7 +161,8 @@ const LandingContentDescription = styled.span`
 const LandignContentButton = styled.button`
     width: 130px;
     height: 54px;
-    background: linear-gradient(${Pink}, ${Coral});
+    background: linear-gradient(to right, ${Coral} 0%, ${Pink} 51%, ${Coral} 100%);
+    transition: background-position 0.2s;
     box-shadow: 0 0 20px #FF5858;
     color: white;
     font-size: 22px;
@@ -170,6 +171,10 @@ const LandignContentButton = styled.button`
     border: none;
     margin-top: 40px;
     cursor: pointer;
+
+    &:hover{
+      background-position: right center;
+    }
 
     @media screen and (min-width: 800px){
         width: 10.729vw;

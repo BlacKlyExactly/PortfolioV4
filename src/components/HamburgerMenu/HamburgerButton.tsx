@@ -48,8 +48,8 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({ open }) => {
         const [ line1, line2, line3 ] = lines.current.childNodes;
         
         timeline.to(line2, { opacity: 0, duration: 0.2, ease:"power2.inOut" }, 0)
-            .to(line1, { rotation: -45, y: 13.54, duration: 0.2, ease:"power2.inOut" }, 0)
-            .to(line3, { rotation: 45, y: -13.54, duration: 0.2, ease:"power2.inOut" }, 0)
+            .to(line1, { rotation: -45, y: 13.54, duration: 0.2, ease: "expo.inOut" }, 0)
+            .to(line3, { rotation: 45, y: -13.54, duration: 0.2, ease: "expo.inOut" }, 0)
             .reverse();
     }, [ timeline ])
 
