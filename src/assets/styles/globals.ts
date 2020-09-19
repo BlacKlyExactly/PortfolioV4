@@ -26,6 +26,10 @@ const GlobalStyles = createGlobalStyle`
     color: inherit;
     text-decoration: inherit;
   }
+
+  button {
+    font-family: "Montserrat";
+  }
 `;
 
 export default GlobalStyles;

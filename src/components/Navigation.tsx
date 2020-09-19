@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
-import { Link } from "gatsby";
 import styled from "styled-components";
 import AniLink from "gatsby-plugin-transition-link/AniLink";
 
-import HamburgerButton from "../components/HamburgerButton";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Wrapper = styled.nav`
     position: absolute;
@@ -22,10 +21,12 @@ const Wrapper = styled.nav`
 `;
 
 const Logo = styled.span`
+    position: relative;
     font-size: 35px;
     font-weight: 700;
     color: white;
     margin-left: 29px;
+    z-index: 100;
 
     @media screen and (min-width: 800px){
         margin-left: 3.5vw;
@@ -84,7 +85,7 @@ const Navigation: FC = () => (
             <Logo>Black</Logo>
         </AniLink>
         <Selects>
-            <HamburgerButton/>
+            <HamburgerMenu selects={NavSelects}/>
             {NavSelects.map(({ display, path }: NavSelect) => (
                 <AniLink cover to={path} bg="white" key={path}>
                     <Select>{display}</Select>

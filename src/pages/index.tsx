@@ -191,12 +191,12 @@ type IndexProps = {
 };
 
 const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
-    const landingWrapper = useRef<HTMLElement>(null);
+    const landingWrapper = useRef<HTMLDivElement>(null);
 
     const { src }: FluidObject = data.file.childImageSharp.fluid;
 
     return(
-      <Wrapper>
+      <Wrapper ref={landingWrapper}>
           <Landing>
               <PageSlider slides={[ landingWrapper, landingWrapper, landingWrapper ]}/>
               <LandingBackground background={src}/>
