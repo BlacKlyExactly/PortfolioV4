@@ -24,6 +24,14 @@ module.exports = {
     `gatsby-plugin-transition-link`,
     `gatsby-plugin-offline`,
     {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /assets/ // See below to configure properly
+        }
+      }
+    },
+    {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
       options: {
         fonts: [
@@ -46,13 +54,5 @@ module.exports = {
         icon: `src/assets/images/b.png`, // This path is relative to the root of the site.
       },
     },
-    {
-      resolve: "gatsby-plugin-react-svg",
-      options: {
-        rule: {
-          include: /\.inline\.svg$/
-        }
-      }
-    }
   ],
 }

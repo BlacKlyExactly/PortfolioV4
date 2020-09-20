@@ -16,6 +16,10 @@ const Wrapper = styled.nav`
     z-index: 100;
 
     @media screen and (min-width: 800px){
+        height: 10vw;
+    }
+
+    @media screen and (min-width: 1200px){
         height: 7.813vw;
     }
 `;
@@ -99,7 +103,7 @@ const Select = styled.li`
     }
 
     @media screen and (min-width: 800px){
-        font-size: 1.502vw;
+        font-size: 2.2vw;
         display: inherit;
     }
 

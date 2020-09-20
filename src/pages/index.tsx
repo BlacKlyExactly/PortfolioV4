@@ -1,11 +1,12 @@
-import React, { FC, useRef } from "react"
+import React, { FC, useRef, useEffect } from "react"
 import { PageProps, graphql } from "gatsby";
 import { FluidObject } from "gatsby-image";
-import styled from "styled-components";
+import styled, { Keyframes, keyframes } from "styled-components";
+import gsap from "gsap";
 
 import { Pink, Coral } from "../assets/styles/colors";
-import * as Waves from "../assets/svgs/wave.inline.svg";
-import * as Hero from "../assets/svgs/hero.inline.svg";
+import * as Waves from "../assets/wave.svg";
+import * as Hero from "../assets/hero.svg";
 
 import PageSlider from "../components/PageSlider";
 
@@ -80,7 +81,7 @@ const LandingDecorations = styled.span`
     }
 `;
 
-const LandingWaves = styled.span`
+const LandingWaves = styled.div`
     display: none;
     position: absolute;
     top: 79%;
@@ -91,6 +92,21 @@ const LandingWaves = styled.span`
     @media screen and (min-width: 800px){
       display: inherit;
     }
+`;
+
+const wavesMovement: Keyframes = keyframes`
+    from{
+        background-position: 0;
+    }
+
+    to{
+        background-position: 100vw;
+    }
+`;
+
+const Wave = styled.div`
+    background: url(${Waves});
+    background-repeat: no-repeat;
 `;
 
 const LandingHero = styled.span`
@@ -141,6 +157,10 @@ const LandingContentTitle = styled.span`
     }
 
     @media screen and (min-width: 800px){
+        font-size: 6.5vw;
+    }
+
+    @media screen and (min-width: 1200px){
         font-size: 4vw;
     }
 `;
@@ -154,6 +174,10 @@ const LandingContentDescription = styled.span`
   }
 
   @media screen and (min-width: 800px){
+      ont-size: 4.344vw;
+  }
+
+  @media screen and (min-width: 1200px){
       font-size: 2.344vw;
   }
 `;
@@ -161,7 +185,7 @@ const LandingContentDescription = styled.span`
 const LandignContentButton = styled.button`
     width: 130px;
     height: 54px;
-    background: linear-gradient(to right, ${Coral} 0%, ${Pink} 51%, ${Coral} 100%);
+    background: linear-gradient(45deg, ${Coral} 20%, ${Pink} 81%);
     transition: background-position 0.2s;
     box-shadow: 0 0 20px #FF5858;
     color: white;
@@ -175,8 +199,14 @@ const LandignContentButton = styled.button`
     &:hover{
       background-position: right center;
     }
-
+   
     @media screen and (min-width: 800px){
+        width: 17.729vw;
+        height: 7.167vw;
+        font-size: 3vw;
+    }
+
+    @media screen and (min-width: 1200px){
         width: 10.729vw;
         height: 4.167vw;
         font-size: 1.719vw;
@@ -197,19 +227,30 @@ type IndexProps = {
 
 const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
     const landingWrapper = useRef<HTMLDivElement>(null);
+    const hero = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+      const [ heroElements ] = hero.current.children;
+
+      const hair = heroElements.querySelector("#Path_32");
+      const head = heroElements.querySelector("#Eclipse_8");
+
+      gsap.to([ hair, head ], { duration: 2, rotateX: 20, ease: "expo.out" });
+    }, [ ]);
 
     const { src }: FluidObject = data.file.childImageSharp.fluid;
 
     return(
-      <Wrapper ref={landingWrapper}>
-          <Landing>
+      <Wrapper>
+          <Landing ref={landingWrapper}>
               <PageSlider slides={[ landingWrapper, landingWrapper, landingWrapper ]}/>
               <LandingBackground background={src}/>
               <LandingDecorations/>
               <LandingWaves>
                 <Waves/>
+                {console.log(Waves)}
               </LandingWaves>
-              <LandingHero>
+              <LandingHero ref={hero}>
                 <Hero/>
               </LandingHero>
               <LandingContent>
@@ -230,10 +271,8 @@ export const query = graphql`
     {
       file(name: {eq: "bg"}) {
         childImageSharp {
-          fluid(maxWidth: 7680, maxHeight: 4320, quality: 90) {
+          fluid(maxWidth: 7680, maxHeight: 4320, quality: 10) {
             src
-            srcSet
-            sizes
           }
         }
       }

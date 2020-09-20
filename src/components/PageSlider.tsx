@@ -1,5 +1,8 @@
-import React, { FC, MutableRefObject, useRef, useState } from "react";
+import React, { FC, MutableRefObject, useRef, useState, useEffect } from "react";
 import styled, { css } from 'styled-components';
+import gsap from "gsap";
+
+import { Coral } from "../assets/styles/colors";
 
 const Wrapper = styled.div`
     position: absolute;
@@ -27,23 +30,41 @@ const Dot = styled.button<DotProps>`
     width: 38px;
     background: white;
     border-radius: 50vw;
-    opacity: 37%;
     margin: 9px;
     z-index: 100;
     border: none;
-    transform: scale(0.95);
     cursor: pointer;
-    transition: transform, opacity 0.1s;
 
-    @media screen and (min-width: 800px){
-        height: 1.979vw;
-        width: 1.979vw;
+    &::after{
+        content: "";
+        transition: opacity 0.1s;
+        position: absolute;
+        top: 29%;
+        left: 28%;
+        height: 45%;
+        width: 45%;
+        background: ${Coral};
+        border-radius: 50vw;
+        opacity: 0%;
     }
 
     ${({ active }) => active && css`
         opacity: 100%;
-        transform: scale(1.0);
+
+        &::after{
+            opacity: 100%;
+        }
     `}
+    
+    @media screen and (min-width: 800px){
+        height: 2.979vw;
+        width: 2.979vw;
+    }
+
+    @media screen and (min-width: 1200px){
+        height: 1.979vw;
+        width: 1.979vw;
+    }
 `;
 
 type SliderProps = {
@@ -55,9 +76,11 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
 
     const sliderWrapper = useRef<HTMLDivElement>(null);
 
-    const handleDotClick = ( dotIndex: number ) => {
-        sliderWrapper.current.childNodes.forEach(( dot: HTMLButtonElement ) => setSlide(dotIndex));
-    }
+    useEffect(() => {
+        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 0.3, stagger: 0.1, ease: "expo.out", delay: 0.5 })
+    }, [ ]);
+
+    const handleDotClick = ( dotIndex: number ) => sliderWrapper.current.childNodes.forEach(( ) => setSlide(dotIndex));
     
     const isDotActive = ( index: number ): boolean => slide === index;
     
