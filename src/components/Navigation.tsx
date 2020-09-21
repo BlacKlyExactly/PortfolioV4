@@ -33,7 +33,7 @@ const Logo = styled.div`
     z-index: 100;
     margin-left: 29px;
     padding-top: 10px;
-    padding-right: 40px;
+    padding-right: 60px;
 
     &:hover{
         &::after{
