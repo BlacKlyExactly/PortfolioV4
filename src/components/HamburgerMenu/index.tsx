@@ -29,20 +29,6 @@ const HamburgerMenuPanel = styled.div`
     }
 `;
 
-const Logo = styled.span`
-    background: linear-gradient(${Pink}, ${Coral});
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 700;
-    font-size: 50px;
-    border: none;
-
-   a{
-        margin-bottom: 40px; 
-   } 
-`;
-
 const Select = styled.button`
     background: linear-gradient(${Pink}, ${Coral});
     background-clip: text;
@@ -53,7 +39,7 @@ const Select = styled.button`
     border: none;
 `;
 
-interface NavSelect {
+export interface NavSelect {
     display: string,
     path: string,
 };

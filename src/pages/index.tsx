@@ -1,24 +1,28 @@
-import React, { FC, useRef, useEffect } from "react"
+import React, { FC, MutableRefObject, useRef, useEffect } from "react"
 import { PageProps, graphql } from "gatsby";
 import { FluidObject } from "gatsby-image";
-import styled, { Keyframes, keyframes } from "styled-components";
+import styled from "styled-components";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 
 import { Pink, Coral } from "../assets/styles/colors";
 import * as Waves from "../assets/wave.svg";
 import * as Hero from "../assets/hero.svg";
 
 import PageSlider from "../components/PageSlider";
+import ShowUp, { Direction } from "../components/ShowUp";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const Wrapper = styled.div`
     width: 100%;
 `;
 
-const Landing = styled.div`
+const Template = styled.div`
     position: relative;
     width: 100%;
     height: 100vh;
-    overflow:  hidden;
+    overflow: hidden;
 `;
 
 interface LandingProps {
@@ -28,14 +32,13 @@ interface LandingProps {
 const LandingBackground = styled.span<LandingProps>`
     position: absolute;
     width: 100%;
-    height: 100vh;
+    height: 99vh;
     background: url(${({ background }) => background});
     background-size: 430%;
     background-position: 14% 10%;
 
     @media screen and (min-width: 800px){
-      background-size: cover;
-      background-position: 20% 50%;
+        background-size: cover;
     }
 
 &::after {
@@ -55,8 +58,8 @@ const LandingDecorations = styled.span`
     top: 0;
     right: 0;
     display: none;
-    width: 44.896vw;
-    height: 56.250vw;
+    width: 43.896vw;
+    height: 50.250vw;
     background: linear-gradient(${Coral}, ${Pink});
     border-radius: 26.042vw 0 0 41.667vw;
 
@@ -84,29 +87,13 @@ const LandingDecorations = styled.span`
 const LandingWaves = styled.div`
     display: none;
     position: absolute;
-    top: 79%;
-    left: 0;
+    bottom: 0%;
+    right: 0;
     width: 100vw;
-    height: 50%;
 
     @media screen and (min-width: 800px){
       display: inherit;
     }
-`;
-
-const wavesMovement: Keyframes = keyframes`
-    from{
-        background-position: 0;
-    }
-
-    to{
-        background-position: 100vw;
-    }
-`;
-
-const Wave = styled.div`
-    background: url(${Waves});
-    background-repeat: no-repeat;
 `;
 
 const LandingHero = styled.span`
@@ -148,7 +135,8 @@ const LandingContent = styled.div`
     }
 `;
 
-const LandingContentTitle = styled.span`
+const LandingContentTitle = styled.div`
+    position: relative;
     font: italic 700 50px "Segoe UI";
     color: white;
 
@@ -165,7 +153,7 @@ const LandingContentTitle = styled.span`
     }
 `;
 
-const LandingContentDescription = styled.span`
+const LandingContentDescription = styled.div`
   font-size: 27px;
   color: white;
 
@@ -182,10 +170,10 @@ const LandingContentDescription = styled.span`
   }
 `;
 
-const LandignContentButton = styled.button`
+const LandingContentButton = styled.button`
     width: 130px;
     height: 54px;
-    background: linear-gradient(45deg, ${Coral} 20%, ${Pink} 81%);
+    background: linear-gradient(${Coral} 30%, ${Pink} 91%);
     transition: background-position 0.2s;
     box-shadow: 0 0 20px #FF5858;
     color: white;
@@ -195,10 +183,6 @@ const LandignContentButton = styled.button`
     border: none;
     margin-top: 40px;
     cursor: pointer;
-
-    &:hover{
-      background-position: right center;
-    }
    
     @media screen and (min-width: 800px){
         width: 17.729vw;
@@ -218,6 +202,11 @@ type Data = {
       childImageSharp: {
         fluid: FluidObject
       }
+    },
+    site: {
+      siteMetadata: {
+        description: string
+      }
     }
 };
 
@@ -226,43 +215,114 @@ type IndexProps = {
 };
 
 const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
-    const landingWrapper = useRef<HTMLDivElement>(null);
+    const landing = useRef<HTMLDivElement>(null);
+    const about = useRef<HTMLDivElement>(null);
+    const terminal = useRef<HTMLDivElement>(null);
+
+    const title = useRef<HTMLDivElement>(null);
+    const description = useRef<HTMLDivElement>(null);
+    const button = useRef<HTMLButtonElement>(null);
+
     const hero = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
       const [ heroElements ] = hero.current.children;
 
-      const hair = heroElements.querySelector("#Path_32");
-      const head = heroElements.querySelector("#Eclipse_8");
+      const head: Element = heroElements.querySelector("#head");
+      const hand: Element = heroElements.querySelector("#hand");
+      const terminal: Element = heroElements.querySelector("#terminal");
+      const shadow: Element = heroElements.querySelector("#shadow");
+      const wave1: Element = heroElements.querySelector("#wave-1");
 
-      gsap.to([ hair, head ], { duration: 2, rotateX: 20, ease: "expo.out" });
+      gsap.to(head, {
+          duration: 3,
+          rotation: -30,
+          ease: "power1.inOut",
+          transformOrigin: "center center",
+          repeat: -1,
+          yoyo: true,
+          delay: 2,
+          repeatDelay: 1,
+      });
+
+      gsap.to(hand, { 
+          duration: 2, 
+          rotation: -25, 
+          ease: "power1.inOut", 
+          transformOrigin: 
+          "top center" ,
+          repeat: -1,
+          yoyo: true,
+          delay: 1,
+          repeatDelay: 1,
+      });
+
+      gsap.to(terminal, {
+          duration: 3.5, 
+          y: -80, 
+          ease: "power1.inOut",
+          repeat: -1,
+          yoyo: true
+      });
+
+      gsap.to(shadow, { 
+          duration: 3.5, 
+          scale: 0.7, 
+          ease: "power1.inOut", 
+          transformOrigin: "center center",
+          repeat: -1,
+          yoyo: true 
+      });
+
+      gsap.to(wave1, {
+          attr: { "baseFrequency": 0.01 },
+          repeat: -1,
+          yoyo: true
+      })
     }, [ ]);
+
+    const scrollTo = ( element: MutableRefObject<HTMLDivElement> ) => {
+      gsap.to(window, { duration: 1, scrollTo: element.current, ease: "expo.out" });
+    }
+
+    const { toTop, toDown } = Direction;
 
     const { src }: FluidObject = data.file.childImageSharp.fluid;
 
     return(
       <Wrapper>
-          <Landing ref={landingWrapper}>
-              <PageSlider slides={[ landingWrapper, landingWrapper, landingWrapper ]}/>
+          <Template ref={landing}>
+              <PageSlider slides={[ landing, about, terminal ]}/>
               <LandingBackground background={src}/>
               <LandingDecorations/>
               <LandingWaves>
                 <Waves/>
-                {console.log(Waves)}
               </LandingWaves>
               <LandingHero ref={hero}>
                 <Hero/>
               </LandingHero>
               <LandingContent>
-                <LandingContentTitle>
-                  Be <span>AWESOME</span>
-                </LandingContentTitle>
-                <LandingContentDescription>
-                  Not <span>only</span> in dreams!
-                </LandingContentDescription>
-                <LandignContentButton>NEXT</LandignContentButton>
+                <ShowUp ref={title} delay={0.2} duration={1.5} value={90} direction={toDown}>
+                  <LandingContentTitle ref={title}> Be <span>AWESOME</span> </LandingContentTitle>
+                </ShowUp>
+                <ShowUp ref={description} delay={0.3} value={90} duration={1.5} direction={toDown}>
+                  <LandingContentDescription ref={description}>
+                    Not <span>only</span> in dreams!
+                  </LandingContentDescription>
+                </ShowUp>
+                <ShowUp ref={button} delay={0.5} duration={1.5} value={90} direction={toTop}>
+                  <LandingContentButton ref={button} onClick={() => scrollTo(about)}>
+                    NEXT
+                  </LandingContentButton>
+                </ShowUp>
               </LandingContent>
-          </Landing>
+          </Template>
+          <Template ref={about}>
+
+          </Template>
+          <Template ref={terminal}>
+
+          </Template>
       </Wrapper>
     )
 };
@@ -274,6 +334,11 @@ export const query = graphql`
           fluid(maxWidth: 7680, maxHeight: 4320, quality: 10) {
             src
           }
+        }
+      }
+      site{
+        siteMetadata{
+          description
         }
       }
     }

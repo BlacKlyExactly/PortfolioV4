@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Black's Portfolio`,
     description: `
-      Hi, I'm a Hobbystic Frontend Dev.
+      I'm a Hobbystic Frontend Dev.
       I create websites from userside and I'm responsible for your expiriences of using websites.
       I hope you enjoy my work!
     `,

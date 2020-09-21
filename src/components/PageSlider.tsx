@@ -1,15 +1,18 @@
 import React, { FC, MutableRefObject, useRef, useState, useEffect } from "react";
 import styled, { css } from 'styled-components';
 import gsap from "gsap";
-
+import { ScrollToPlugin } from "gsap/all";
 import { Coral } from "../assets/styles/colors";
 
+gsap.registerPlugin(ScrollToPlugin);
+
 const Wrapper = styled.div`
-    position: absolute;
+    position: fixed;
     display: flex;
     width: 100vw;
     top: 85%;
     justify-content: center;
+    z-index: 90;
 
     @media screen and (min-width: 800px){
         flex-direction: column;
@@ -34,6 +37,7 @@ const Dot = styled.button<DotProps>`
     z-index: 100;
     border: none;
     cursor: pointer;
+    box-shadow: 0 0 2vw rgba(0, 0, 0, 0.6);
 
     &::after{
         content: "";
@@ -68,7 +72,7 @@ const Dot = styled.button<DotProps>`
 `;
 
 type SliderProps = {
-    slides: Array<MutableRefObject<HTMLElement>>
+    slides: Array<MutableRefObject<HTMLDivElement>>
 }
 
 const PageSlider: FC<SliderProps> = ({ slides }) => {
@@ -77,17 +81,32 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 0.3, stagger: 0.1, ease: "expo.out", delay: 0.5 })
+        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.out", delay: 0.7 });
+
+        const handleMousewheel = () => {
+            slides.forEach(( element: MutableRefObject<HTMLDivElement>, index: number ) => {
+                const { y }: DOMRect = element.current.getBoundingClientRect();
+
+                window.scrollY > y && setSlide(index);
+            })    
+        }
+
+        window.addEventListener("mousewheel", handleMousewheel);
+
+        return () => window.removeEventListener("mousewheel", handleMousewheel);
     }, [ ]);
 
-    const handleDotClick = ( dotIndex: number ) => sliderWrapper.current.childNodes.forEach(( ) => setSlide(dotIndex));
+    const handleDotClick = ( dotIndex: number, element: MutableRefObject<HTMLDivElement> ) => {
+        setSlide(dotIndex);
+        gsap.to(window, { duartion: 1, scrollTo: element.current, ease: "expo.out" })
+    }
     
     const isDotActive = ( index: number ): boolean => slide === index;
     
     return(
         <Wrapper ref={sliderWrapper}>
-            {slides.map(( slide: MutableRefObject<HTMLElement>, index: number ) => (
-                <Dot key={index} active={isDotActive(index)} onClick={() => handleDotClick(index)}/>
+            {slides.map(( slide: MutableRefObject<HTMLDivElement>, index: number ) => (
+                <Dot key={index} active={isDotActive(index)} onClick={() => handleDotClick(index, slide)}/>
             ))}
         </Wrapper>
     );

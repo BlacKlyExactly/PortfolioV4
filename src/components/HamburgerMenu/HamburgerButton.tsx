@@ -11,8 +11,13 @@ const Wrapper = styled.button`
     width: 42px;
     border: none;
     background: transparent;
-    padding: 0;
+    padding: 10px 0 0 0;
     z-index: 90;
+    margin-right: 20px;
+
+    &:focus{
+        outline: none;
+    }
 
     @media screen and (min-width: 800px){
         display: none;

@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, MutableRefObject, useRef } from 'react';
 import styled from "styled-components";
 import AniLink from "gatsby-plugin-transition-link/AniLink";
 
-import HamburgerMenu from "./HamburgerMenu";
+import HamburgerMenu, { NavSelect } from "./HamburgerMenu";
+import ShowUp, { Direction } from "./ShowUp";
 
 const Wrapper = styled.nav`
     position: absolute;
@@ -24,13 +25,14 @@ const Wrapper = styled.nav`
     }
 `;
 
-const Logo = styled.span`
+const Logo = styled.div`
     position: relative;
     font-size: 35px;
     font-weight: 700;
     color: white;
     margin-left: 29px;
     z-index: 100;
+    padding-top: 10px;
 
     &:hover{
         &::after{
@@ -44,7 +46,7 @@ const Logo = styled.span`
         position: absolute;
         width: 100%;
         height: 20%;
-        top: 110%;
+        top: -10%;
         left: 0;
         background: white;
         transform: scaleX(0);
@@ -59,18 +61,17 @@ const Logo = styled.span`
 
 const Selects = styled.ul`
     display: flex;
-    width: 79%;
+    width: 70vw;
     justify-content: flex-end;
     margin: 0;
     list-style: none;
-    margin-right: 30px;
 
     @media screen and (min-width: 800px){
-        width: 80%;
+        width: 80vw;
     }
 
     @media screen and (min-width: 1200px){
-        width: 50%;
+        width: 50vw;
     }
 `;
 
@@ -81,7 +82,8 @@ const Select = styled.li`
     color: white;
     font-weight: 850;
     margin: 0 19px;
-
+    padding-top: 10px;
+    
     &:hover{
         &::after{
             transform: scaleX(1);
@@ -94,7 +96,7 @@ const Select = styled.li`
         position: absolute;
         width: 100%;
         height: 20%;
-        top: 110%;
+        top: -10%;
         left: 0;
         background: white;
         transform: scaleX(0);
@@ -113,31 +115,37 @@ const Select = styled.li`
     }
 `;
 
-interface NavSelect {
-    display: string,
-    path: string,
-};
-
-const NavSelects: Array<NavSelect> = [
+const navSelects: Array<NavSelect> = [
     { display: "Portfolio", path: "/portfolio"},
     { display: "Hire Me!", path: "/hire"},
     { display: "Contact", path: "/contact"}
 ]
 
-const Navigation: FC = () => (
-    <Wrapper>
-        <AniLink cover to="/" bg="white">
-            <Logo>Black</Logo>
-        </AniLink>
-        <Selects>
-            <HamburgerMenu selects={NavSelects}/>
-            {NavSelects.map(({ display, path }: NavSelect) => (
-                <AniLink cover to={path} bg="white" key={path}>
-                    <Select>{display}</Select>
+const Navigation: FC = () => {
+    const logo = useRef<HTMLDivElement>(null);
+    const selects = useRef<HTMLUListElement>(null);
+
+    const { toDown, toLeft } = Direction;
+
+    return(
+        <Wrapper>
+            <ShowUp ref={logo} delay={0.5} duration={1.5} value={180} direction={toLeft}>
+                <AniLink cover to="/" bg="white">
+                    <Logo ref={logo}>Black</Logo>
                 </AniLink>
-            ))}
-        </Selects>
-    </Wrapper>
-)
+            </ShowUp>
+            <ShowUp ref={selects} delay={0.4} duration={1} value={250} direction={toDown} stagger={0.1}>
+                <Selects ref={selects}>
+                    <HamburgerMenu selects={navSelects}/>
+                    {navSelects.map(({ display, path }: NavSelect, index: number) => (
+                        <AniLink cover to={path} bg="white" key={path}>
+                            <Select>{display}</Select>
+                        </AniLink>
+                    ))}
+                </Selects>
+            </ShowUp>
+        </Wrapper>
+    )
+}
 
 export default Navigation;
