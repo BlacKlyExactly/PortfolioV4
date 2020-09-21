@@ -13,6 +13,7 @@ const Wrapper = styled.button`
     background: transparent;
     padding: 10px 0 0 0;
     z-index: 90;
+    margin-left: auto;
     margin-right: 20px;
 
     &:focus{

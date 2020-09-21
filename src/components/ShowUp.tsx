@@ -52,8 +52,6 @@ const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, 
         stagger === 0 ?
             timeline.from(ref.current, settings) : 
             timeline.from(ref.current.children, settings);
-        
-        timeline.to(wrapper.current, { overflow: "visible" });
     }, [ ])
 
     return(

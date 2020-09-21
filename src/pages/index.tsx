@@ -162,7 +162,7 @@ const LandingContentDescription = styled.div`
   }
 
   @media screen and (min-width: 800px){
-      ont-size: 4.344vw;
+      font-size: 4.344vw;
   }
 
   @media screen and (min-width: 1200px){

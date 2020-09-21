@@ -30,9 +30,10 @@ const Logo = styled.div`
     font-size: 35px;
     font-weight: 700;
     color: white;
-    margin-left: 29px;
     z-index: 100;
+    margin-left: 29px;
     padding-top: 10px;
+    padding-right: 40px;
 
     &:hover{
         &::after{
@@ -61,13 +62,14 @@ const Logo = styled.div`
 
 const Selects = styled.ul`
     display: flex;
-    width: 70vw;
+    width: 90vw;
     justify-content: flex-end;
-    margin: 0;
     list-style: none;
+    padding: 0;
+    margin: 0;
 
     @media screen and (min-width: 800px){
-        width: 80vw;
+        width: 75vw;
     }
 
     @media screen and (min-width: 1200px){
@@ -83,6 +85,7 @@ const Select = styled.li`
     font-weight: 850;
     margin: 0 19px;
     padding-top: 10px;
+    text-shadow: 0 0 1vw rgba(0, 0, 0, 0.3);
     
     &:hover{
         &::after{
@@ -134,16 +137,16 @@ const Navigation: FC = () => {
                     <Logo ref={logo}>Black</Logo>
                 </AniLink>
             </ShowUp>
-            <ShowUp ref={selects} delay={0.4} duration={1} value={250} direction={toDown} stagger={0.1}>
-                <Selects ref={selects}>
+                <ShowUp ref={selects} delay={0.4} duration={1} value={250} direction={toDown} stagger={0.1}>
                     <HamburgerMenu selects={navSelects}/>
-                    {navSelects.map(({ display, path }: NavSelect, index: number) => (
-                        <AniLink cover to={path} bg="white" key={path}>
-                            <Select>{display}</Select>
-                        </AniLink>
-                    ))}
-                </Selects>
-            </ShowUp>
+                    <Selects ref={selects}>
+                        {navSelects.map(({ display, path }: NavSelect, index: number) => (
+                            <AniLink cover to={path} bg="white" key={path}>
+                                <Select>{display}</Select>
+                            </AniLink>
+                        ))}
+                    </Selects>
+                </ShowUp>
         </Wrapper>
     )
 }
