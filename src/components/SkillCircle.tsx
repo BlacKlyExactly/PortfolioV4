@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect } from "React";
+import React, { FC, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import * as Circle from "../assets/circle.svg";
@@ -35,7 +35,22 @@ const Name = styled.span`
     }
 `;
 
+const Percentage = styled.span`
+    position: absolute;
+    font-size: 18px;
+    font-weight: 700;
+    color: ${Coral};
+
+    @media screen and (min-width: 1200px){
+        font-size: 1.042vw;
+    }
+`;
+
 const SkillCircleContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 67px;
     height: 67px;
 
@@ -64,14 +79,15 @@ const SkillCircle: FC<SkillCircleInfo> = ({ name, percentage }: SkillCircleInfo)
     useEffect(() => {
         const [ elements ]: HTMLCollection = circleContainer.current.children;
 
-        /* const circleFill: Element = elements.querySelector("#circleFill");
-        console.log(circleFill); */
+        const circleFill: HTMLElement = elements.querySelector("#circleFill");
+        circleFill.style.strokeDasharray = `${percentage}, 100`;
     }, [ ]);
 
     return(
         <Wrapper>
             <SkillCircleContainer ref={circleContainer}>
-                <Circle/>
+                <Circle />
+                <Percentage>{`${percentage}%`}</Percentage>
             </SkillCircleContainer>
             <Name>{name}</Name>
         </Wrapper>
