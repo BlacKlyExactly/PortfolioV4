@@ -81,7 +81,7 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.out", delay: 0.7 });
+        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.inOut", delay: 0.7 });
 
         const handleMousewheel = () => {
             slides.forEach(( element: MutableRefObject<HTMLDivElement>, index: number ) => {
@@ -98,7 +98,7 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
 
     const handleDotClick = ( dotIndex: number, element: MutableRefObject<HTMLDivElement> ) => {
         setSlide(dotIndex);
-        gsap.to(window, { duartion: 1, scrollTo: element.current, ease: "expo.out" })
+        gsap.to(window, { scrollTo: element.current, ease: "expo.inOut" })
     }
     
     const isDotActive = ( index: number ): boolean => slide === index;

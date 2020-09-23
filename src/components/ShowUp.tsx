@@ -1,9 +1,19 @@
-import React, { FC, ReactNode, useEffect, useRef, forwardRef, MutableRefObject} from "react";
-import styled from "styled-components";
+import React, { FC, ReactNode, useEffect, useRef, useState, forwardRef, MutableRefObject} from "react";
+import styled, { css } from "styled-components";
 import gsap from "gsap";
 
-const Wrapper = styled.div`
+interface WrapperProps {
+    center: boolean
+}
+
+const Wrapper = styled.div<WrapperProps>`
     overflow: hidden;
+
+    ${({ center }) => center && css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `}
 `;
 
 export enum Direction{
@@ -19,7 +29,9 @@ type ShowUpProps = {
     duration: number,
     value: number,
     direction?: Direction,
-    stagger?: number
+    stagger?: number,
+    scroll?: number,
+    center?: boolean
     ref: any
 };
 
@@ -39,23 +51,45 @@ const getValue = ( direction: Direction, value: number ): number => {
     return value;
 }
 
-const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, direction, stagger = 0 }, ref: MutableRefObject<HTMLDivElement> ) => {
+const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref: MutableRefObject<HTMLDivElement> ) => {
     const wrapper = useRef<HTMLDivElement>(null);
 
-    const settings = { [getDirection(direction)]:  getValue(direction, value), duration, delay, ease: "expo.out", stagger };
+    const settings = { [ getDirection(direction) ]:  getValue(direction, value), duration, delay, ease: "expo.out", stagger };
 
     useEffect(() => {
         if(!ref) return;
 
-        const timeline = gsap.timeline();
+        const elements: Element | HTMLCollection = stagger === 0 ? ref.current : ref.current.children;
 
-        stagger === 0 ?
-            timeline.from(ref.current, settings) : 
-            timeline.from(ref.current.children, settings);
+        scroll === 0 ?
+            gsap.from(elements, settings) : 
+            gsap.set(elements, { [ getDirection(direction) ]:  getValue(direction, value) });
+
+
+        let showed = false;
+        
+        const show = () => {
+            const { y }: DOMRect = ref.current.getBoundingClientRect();
+
+            if(window.scrollY > y + scroll && showed === false){
+                showed = true;
+
+                const scrollSettings = { [ getDirection(direction) ]: 0, duration, delay, ease: "expo.out", stagger }
+                gsap.to(elements, scrollSettings);
+            }
+        }
+
+
+        if(scroll !== 0) {
+            window.addEventListener("scroll", show);
+            show();
+        }
+
+        return () => scroll !== 0 && window.removeEventListener("scroll", show);
     }, [ ])
 
     return(
-        <Wrapper ref={wrapper}>
+        <Wrapper ref={wrapper} center={center}>
             {children}
         </Wrapper>
     )

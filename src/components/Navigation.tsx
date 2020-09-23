@@ -73,7 +73,7 @@ const Selects = styled.ul`
     }
 
     @media screen and (min-width: 1200px){
-        width: 50vw;
+        width: 43vw;
     }
 `;
 

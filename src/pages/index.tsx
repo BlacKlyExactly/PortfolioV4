@@ -1,6 +1,6 @@
 import React, { FC, MutableRefObject, useRef, useEffect } from "react"
 import { PageProps, graphql } from "gatsby";
-import { FluidObject } from "gatsby-image";
+import Image, { FluidObject } from "gatsby-image";
 import styled from "styled-components";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"
@@ -8,34 +8,41 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import { Pink, Coral } from "../assets/styles/colors";
 import * as Waves from "../assets/wave.svg";
 import * as Hero from "../assets/hero.svg";
+import * as Profile from "../assets/profile.svg";
 
 import PageSlider from "../components/PageSlider";
 import ShowUp, { Direction } from "../components/ShowUp";
+import SkillCircle, { SkillCircleInfo } from "../components/SkillCircle";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 const Wrapper = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
 `;
 
 const Template = styled.div`
+    position: relative;
+    width: 85%;
+    min-height: 100vh;
+`;
+
+const LandingWrapper = styled.div`
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
 `;
 
-interface LandingProps {
-    background: string;
-}
-
-const LandingBackground = styled.span<LandingProps>`
+const LandingBackground = styled.div`
     position: absolute;
-    width: 100%;
+    width: 100vw;
     height: 99vh;
-    background: url(${({ background }) => background});
     background-size: 430%;
     background-position: 14% 10%;
+    overflow: hidden;
 
     @media screen and (min-width: 800px){
         background-size: cover;
@@ -197,8 +204,117 @@ const LandingContentButton = styled.button`
     }
 `;
 
+const Main = styled.main`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 70px;
+  text-align: center;
+
+  @media screen and (min-width: 1200px){
+      text-align: right;
+      flex-direction: row;
+      justify-content: space-between;
+  }
+`;
+
+const MainTitle = styled.div`
+    font-size: 50px;
+    color: ${Pink};
+    font-weight: 700;
+    margin: 50px 0px;
+
+    @media screen and (min-width: 1200px){
+        font-size: 2.865vw;
+    }
+`;
+
+const MainContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    @media screen and (min-width: 1200px){
+        width: 30%;
+        margin-right: 5vw;
+        align-items: flex-end;
+    }
+`;
+
+const MainContentDescription = styled.div`
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 40px;
+    margin-top: 40px;
+
+    @media screen and (min-width: 800px){
+        width: 50%;
+        margin: 0;
+    }
+
+    @media screen and (min-width: 1200px){
+        font-size: 1.042vw;
+        width: 100%;
+        text-align: right;
+    }
+`;
+
+const Photo = styled.div`
+    position: relative;
+    width: 290px;
+    height: 389px;
+    margin-top: 50px;
+    padding-right: 20px;
+
+    @media screen and (min-width: 1200px){
+        width: 20vw;
+        height: 26vw;
+        padding-right: 2vw;
+    }
+
+    &::before{
+      content: "";
+      position: absolute;
+      top: -5%;
+      left: 10%;
+      width: 90%;
+      height: 92%;
+      background: ${Coral}; 
+    }
+`;
+
+const MainContentIllustration = styled.div`
+    width: 30vw;
+    display: none;
+    margin-top: 40px;
+
+    @media screen and (min-width: 1200px){
+        display: inherit;
+    }
+`;
+
+const MainSkills = styled.div`
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      @media screen and (min-width: 1200px){
+          width: 30%;
+          margin-right: 5vw;
+          align-items: flex-end;
+      }
+`;
+
 type Data = {
-    file: {
+    background: {
+      childImageSharp: {
+        fluid: FluidObject
+      }
+    },
+    photo: {
       childImageSharp: {
         fluid: FluidObject
       }
@@ -214,6 +330,15 @@ type IndexProps = {
     data: Data,
 };
 
+const { toTop, toDown, toLeft, toRight } = Direction;
+
+const skillInfo: Array<SkillCircleInfo> = [
+  { name: "Java Script", percentage: 85 }, 
+  { name: "React", percentage: 90 }, 
+  { name: "CSS", percentage: 75 }, 
+  { name: "HTML", percentage: 80 }, 
+]
+
 const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
     const landing = useRef<HTMLDivElement>(null);
     const about = useRef<HTMLDivElement>(null);
@@ -223,16 +348,23 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
     const description = useRef<HTMLDivElement>(null);
     const button = useRef<HTMLButtonElement>(null);
 
+    const mainTitle = useRef<HTMLDivElement>(null);
+    const mainDescription = useRef<HTMLDivElement>(null);
+    const mainIllustration = useRef<HTMLDivElement>(null);
+    const mainPhoto = useRef<HTMLDivElement>(null);
+
+    const skillTitle = useRef<HTMLDivElement>(null);
+    const skills = useRef<HTMLDivElement>(null);
+
     const hero = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-      const [ heroElements ] = hero.current.children;
+      const [ heroElements ]: HTMLCollection = hero.current.children;
 
       const head: Element = heroElements.querySelector("#head");
       const hand: Element = heroElements.querySelector("#hand");
       const terminal: Element = heroElements.querySelector("#terminal");
       const shadow: Element = heroElements.querySelector("#shadow");
-      const wave1: Element = heroElements.querySelector("#wave-1");
 
       gsap.to(head, {
           duration: 3,
@@ -273,52 +405,149 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
           repeat: -1,
           yoyo: true 
       });
-
-      gsap.to(wave1, {
-          attr: { "baseFrequency": 0.01 },
-          repeat: -1,
-          yoyo: true
-      })
     }, [ ]);
 
     const scrollTo = ( element: MutableRefObject<HTMLDivElement> ) => {
-      gsap.to(window, { duration: 1, scrollTo: element.current, ease: "expo.out" });
+      gsap.to(window, { duration: 1, scrollTo: element.current, ease: "expo.inOut" });
     }
 
-    const { toTop, toDown } = Direction;
-
-    const { src }: FluidObject = data.file.childImageSharp.fluid;
+    const background: FluidObject = data.background.childImageSharp.fluid;
+    const photo: FluidObject = data.photo.childImageSharp.fluid;
 
     return(
       <Wrapper>
-          <Template ref={landing}>
+          <LandingWrapper ref={landing}>
               <PageSlider slides={[ landing, about, terminal ]}/>
-              <LandingBackground background={src}/>
+              <LandingBackground>
+                  <Image 
+                      fluid={background} 
+                      style={{ height: "100vh" }}
+                  />
+              </LandingBackground>
               <LandingDecorations/>
               <LandingWaves>
                 <Waves/>
               </LandingWaves>
               <LandingHero ref={hero}>
-                <Hero/>
+                  <Hero/>
               </LandingHero>
               <LandingContent>
-                <ShowUp ref={title} delay={0.2} duration={1.5} value={90} direction={toDown}>
-                  <LandingContentTitle ref={title}> Be <span>AWESOME</span> </LandingContentTitle>
+                <ShowUp 
+                    ref={title} 
+                    delay={0.2} 
+                    duration={1.5} 
+                    value={90} 
+                    direction={toDown}
+                >
+                    <LandingContentTitle ref={title}> Be <span>AWESOME</span> </LandingContentTitle>
                 </ShowUp>
-                <ShowUp ref={description} delay={0.3} value={90} duration={1.5} direction={toDown}>
+                <ShowUp 
+                    ref={description} 
+                    delay={0.3} 
+                    value={90} 
+                    duration={1.5} 
+                    direction={toDown}
+                >
                   <LandingContentDescription ref={description}>
-                    Not <span>only</span> in dreams!
+                      Not <span>only</span> in dreams!
                   </LandingContentDescription>
                 </ShowUp>
-                <ShowUp ref={button} delay={0.5} duration={1.5} value={90} direction={toTop}>
-                  <LandingContentButton ref={button} onClick={() => scrollTo(about)}>
+                <ShowUp 
+                    ref={button} 
+                    delay={0.5} 
+                    duration={1.5} 
+                    value={90} 
+                    direction={toTop}
+                >
+                  <LandingContentButton 
+                      ref={button} 
+                      onClick={() => scrollTo(about)}
+                  >
                     NEXT
                   </LandingContentButton>
                 </ShowUp>
               </LandingContent>
-          </Template>
+          </LandingWrapper>
           <Template ref={about}>
-
+              <Main>
+                  <MainContent>
+                      <ShowUp 
+                          ref={mainTitle} 
+                          delay={0} 
+                          duration={1.5} 
+                          value={100} 
+                          direction={toTop} 
+                          scroll={1}
+                      >
+                          <MainTitle ref={mainTitle}>About Me!</MainTitle>
+                      </ShowUp>
+                      <ShowUp 
+                          ref={mainDescription} 
+                          delay={0.2} 
+                          duration={1.5} 
+                          value={500} 
+                          direction={toLeft} 
+                          scroll={-500}
+                          center
+                      >
+                          <MainContentDescription ref={mainDescription}>
+                            {data.site.siteMetadata.description}
+                          </MainContentDescription>
+                      </ShowUp>
+                      <ShowUp 
+                          ref={mainIllustration} 
+                          delay={0.3} 
+                          duration={1.5} 
+                          value={500} 
+                          direction={toTop} 
+                          scroll={-500}
+                      >
+                          <MainContentIllustration ref={mainIllustration}>
+                              <Profile/>
+                          </MainContentIllustration>
+                      </ShowUp>
+                  </MainContent>
+                  <ShowUp 
+                          ref={mainPhoto} 
+                          delay={0.4} 
+                          duration={1.5} 
+                          value={500} 
+                          direction={toRight} 
+                          scroll={-500}
+                  >
+                      <Photo ref={mainPhoto}>
+                         <Image fluid={photo}/>
+                      </Photo>
+                  </ShowUp>
+                  <MainSkills>
+                      <ShowUp 
+                              ref={skillTitle} 
+                              delay={0.5} 
+                              duration={1.5} 
+                              value={300} 
+                              direction={toTop} 
+                              scroll={1}
+                      >
+                          <MainTitle ref={skillTitle}>Frontend Skills</MainTitle>
+                      </ShowUp>
+                      <ShowUp 
+                              ref={skills} 
+                              delay={0.6} 
+                              duration={1.5} 
+                              value={500} 
+                              direction={toLeft} 
+                              scroll={-500}
+                              stagger={0.1}
+                              center
+                      >
+                          <div ref={skills}>
+                              {skillInfo.map(({ name, percentage }: SkillCircleInfo) => (
+                                  <SkillCircle name={name} percentage={percentage} key={name}/>
+                              ))}
+                          </div>
+                      </ShowUp>
+                  </MainSkills>
+              </Main>
           </Template>
           <Template ref={terminal}>
 
@@ -329,16 +558,25 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
 
 export const query = graphql`
     {
-      file(name: {eq: "bg"}) {
+      background: file(name: {eq: "site-bg"}) {
         childImageSharp {
-          fluid(maxWidth: 7680, maxHeight: 4320, quality: 10) {
-            src
+          fluid(maxWidth: 7680, quality: 10) {
+              ...GatsbyImageSharpFluid_tracedSVG,
+              sizes,
+              srcSet
+          }
+        }
+      }
+      photo: file(name: {eq: "site-image"}) {
+        childImageSharp {
+          fluid(maxHeight: 552, quality: 80) {
+              ...GatsbyImageSharpFluid_tracedSVG,
           }
         }
       }
       site{
         siteMetadata{
-          description
+            description
         }
       }
     }
