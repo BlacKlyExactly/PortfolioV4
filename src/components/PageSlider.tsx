@@ -96,7 +96,6 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     }, [ ]);
 
     const handleDotClick = ( dotIndex: number, element: MutableRefObject<HTMLDivElement> ) => {
-        setSlide(dotIndex);
         gsap.to(window, { scrollTo: element.current, ease: "expo.inOut" })
     }
     
