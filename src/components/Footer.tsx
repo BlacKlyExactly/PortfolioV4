@@ -18,10 +18,12 @@ const Wrapper = styled.footer`
 const Title = styled.h1`
     font-size: 40px;
     margin-bottom: 10px;
+    text-align: center;
 `;
 
 const Description = styled.span`
     font-size:15px;
+    text-align: center;
 `;
 
 const Footer: FC = () => (
