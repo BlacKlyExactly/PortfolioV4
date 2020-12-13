@@ -689,7 +689,7 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                     stagger={0.2}
                     value={1000}
                     direction={toTop}
-                    scroll={100}
+                    scroll={20}
                     delay={0.5}
                     duration={1}
                     center
