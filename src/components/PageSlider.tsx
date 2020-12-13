@@ -83,17 +83,16 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     useEffect(() => {
         gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.inOut", delay: 0.7 });
 
-        const handleMousewheel = () => {
+        const handleScroll = () => {
             slides.forEach(( element: MutableRefObject<HTMLDivElement>, index: number ) => {
-                const { y }: DOMRect = element.current.getBoundingClientRect();
+                if(!element.current) return;
 
+                const { y }: DOMRect = element.current.getBoundingClientRect();
                 window.scrollY > y && setSlide(index);
             })    
         }
 
-        window.addEventListener("mousewheel", handleMousewheel);
-
-        return () => window.removeEventListener("mousewheel", handleMousewheel);
+        window.addEventListener("scroll", handleScroll);
     }, [ ]);
 
     const handleDotClick = ( dotIndex: number, element: MutableRefObject<HTMLDivElement> ) => {

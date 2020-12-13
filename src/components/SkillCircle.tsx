@@ -29,7 +29,7 @@ const Name = styled.span`
     width: 150px;
 
     @media screen and (min-width: 1200px){
-        font-size: 1.4vw;
+        font-size: 1.2vw;
         width: 9vw;
         text-align: left;
     }

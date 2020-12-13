@@ -1,3 +1,9 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+const config = require('gatsby-plugin-config').default;
+
 module.exports = {
   siteMetadata: {
     title: `Black's Portfolio`,
@@ -7,6 +13,7 @@ module.exports = {
       I hope you enjoy my work!
     `,
     author: `@BlacKisEverywhere`,
+    siteUrl: "https://blackly-exactly.netlify.app/"
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -22,7 +29,6 @@ module.exports = {
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-layout`,
     `gatsby-plugin-transition-link`,
-    `gatsby-plugin-offline`,
     {
       resolve: "gatsby-plugin-react-svg",
       options: {
@@ -51,7 +57,15 @@ module.exports = {
         background_color: `#F857A6`,
         theme_color: `#F857A6`,
         display: `minimal-ui`,
-        icon: `src/assets/images/b.png`, // This path is relative to the root of the site.
+        icon: `src/assets/images/b.png`,
+      },
+    },
+    {
+      resolve: `gatsby-source-datocms`,
+      options: {
+        apiToken: config.DATO_KEY,
+        disableLiveReload: false,
+        preview: false,
       },
     },
   ],

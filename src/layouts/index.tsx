@@ -1,18 +1,18 @@
 import React, { FC, ReactNode } from "react";
 import GlobalStyles from "../assets/styles/globals";
 
-import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
+
+const Layout: FC<LayoutProps> = ({ children }: LayoutProps) => (
+    <>
+        <GlobalStyles />
+        {children}
+        <Footer/>
+    </>
+)
 
 type LayoutProps = {
-  children: ReactNode,
+    children: ReactNode,
 }
-
-const Layout: FC = ({ children }: LayoutProps) => (
-  <>
-    <GlobalStyles />
-    <Navigation/>
-    {children}
-  </>
-)
 
 export default Layout;

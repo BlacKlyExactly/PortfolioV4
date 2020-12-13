@@ -1,5 +1,5 @@
-import React, { FC, MutableRefObject, useRef } from 'react';
-import styled from "styled-components";
+import React, { FC, useRef } from 'react';
+import styled, { css } from "styled-components";
 import AniLink from "gatsby-plugin-transition-link/AniLink";
 
 import HamburgerMenu, { NavSelect } from "./HamburgerMenu";
@@ -60,21 +60,27 @@ const Logo = styled.div`
     }
 `;
 
-const Selects = styled.ul`
+interface SelectsProps{
+    isFull?: boolean;
+}
+
+const Selects = styled.ul<SelectsProps>`
     display: flex;
-    width: 90vw;
+    width: 85vw;
     justify-content: flex-end;
     list-style: none;
     padding: 0;
     margin: 0;
 
-    @media screen and (min-width: 800px){
-        width: 75vw;
-    }
+    ${({ isFull }) => !isFull && css`
+        @media screen and (min-width: 800px){
+            width: 75vw;
+        }
 
-    @media screen and (min-width: 1200px){
-        width: 43vw;
-    }
+        @media screen and (min-width: 1200px){
+            width: 43vw;
+        }
+    `}
 `;
 
 const Select = styled.li`
@@ -82,10 +88,10 @@ const Select = styled.li`
     display: none;
     font-size: 25px;
     color: white;
-    font-weight: 850;
+    font-weight: 700;
+    letter-spacing: 0.08vw;
     margin: 0 19px;
     padding-top: 10px;
-    text-shadow: 0 0 1vw rgba(0, 0, 0, 0.3);
     
     &:hover{
         &::after{
@@ -124,7 +130,7 @@ const navSelects: Array<NavSelect> = [
     { display: "Contact", path: "/contact"}
 ]
 
-const Navigation: FC = () => {
+const Navigation: FC<NavigationProps> = ({ isFull }) => {
     const logo = useRef<HTMLDivElement>(null);
     const selects = useRef<HTMLUListElement>(null);
 
@@ -139,7 +145,7 @@ const Navigation: FC = () => {
             </ShowUp>
                 <ShowUp ref={selects} delay={0.4} duration={1} value={250} direction={toDown} stagger={0.1}>
                     <HamburgerMenu selects={navSelects}/>
-                    <Selects ref={selects}>
+                    <Selects ref={selects} isFull={isFull}>
                         {navSelects.map(({ display, path }: NavSelect, index: number) => (
                             <AniLink cover to={path} bg="white" key={path}>
                                 <Select>{display}</Select>
@@ -149,6 +155,10 @@ const Navigation: FC = () => {
                 </ShowUp>
         </Wrapper>
     )
+}
+
+type NavigationProps = {
+    isFull?: boolean
 }
 
 export default Navigation;

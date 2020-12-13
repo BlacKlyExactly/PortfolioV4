@@ -2,6 +2,9 @@ import React, { FC } from 'react';
 import { PageProps } from "gatsby";
 import styled from "styled-components";
 
+import SEO from "../components/seo";
+import Navigation from "../components/Navigation";
+
 import { Pink, Coral } from "../assets/styles/colors";
 
 const Wrapper = styled.div`
@@ -16,6 +19,8 @@ const Wrapper = styled.div`
 
 const PortfolioPage: FC<PageProps> = () => (
     <Wrapper>
+        <Navigation isFull={true}/>
+        <SEO title="Portfolio"/>
         <h1>Portfolio</h1>
     </Wrapper>
 );

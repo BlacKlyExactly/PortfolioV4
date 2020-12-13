@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useRef, useState, forwardRef, MutableRefObject} from "react";
+import React, { FC, ReactNode, useEffect, useRef, useState, forwardRef, MutableRefObject, Ref} from "react";
 import styled, { css } from "styled-components";
 import gsap from "gsap";
 
@@ -23,18 +23,6 @@ export enum Direction{
     toRight
 };
 
-type ShowUpProps = {
-    children: ReactNode,
-    delay: number,
-    duration: number,
-    value: number,
-    direction?: Direction,
-    stagger?: number,
-    scroll?: number,
-    center?: boolean
-    ref: any
-};
-
 const { toTop, toDown, toRight } = Direction;
 
 const getDirection = ( direction: Direction ): string => {
@@ -51,7 +39,10 @@ const getValue = ( direction: Direction, value: number ): number => {
     return value;
 }
 
-const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref: MutableRefObject<HTMLDivElement> ) => {
+const ShowUp = forwardRef<
+    HTMLElement, 
+    ShowUpProps
+>(({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref ) => {
     const wrapper = useRef<HTMLDivElement>(null);
 
     const settings = { [ getDirection(direction) ]:  getValue(direction, value), duration, delay, ease: "expo.out", stagger };
@@ -67,14 +58,14 @@ const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, 
 
 
         let showed = false;
-        
+                
         const show = () => {
             const { y }: DOMRect = ref.current.getBoundingClientRect();
 
             if(window.scrollY > y + scroll && showed === false){
                 showed = true;
 
-                const scrollSettings = { [ getDirection(direction) ]: 0, duration, delay, ease: "expo.out", stagger }
+                const scrollSettings = { [ getDirection(direction) ]: 0, duration, delay, ease: "expo.out", stagger, opacity: 1 }
                 gsap.to(elements, scrollSettings);
             }
         }
@@ -94,5 +85,17 @@ const ShowUp: FC<ShowUpProps> = forwardRef(({ children, delay, duration, value, 
         </Wrapper>
     )
 });
+
+type ShowUpProps = {
+    children: ReactNode,
+    delay: number,
+    duration: number,
+    value: number,
+    direction?: Direction,
+    stagger?: number,
+    scroll?: number,
+    center?: boolean,
+};
+
 
 export default ShowUp;
