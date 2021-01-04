@@ -5,7 +5,7 @@
   </a>
 </p>
 <h1 align="center">
-  Gatsby's default starter<br/><br/>
+  Portfolio website<br/><br/>
   SEE: <a href="https://blackly-exactly.netlify.app/">Deployed Website</a>
 </h1>
 
