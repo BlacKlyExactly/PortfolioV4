@@ -5,7 +5,7 @@
   </a>
 </p>
 <h1 align="center">
-  Portfolio website<br/><br/>
+  Portfolio website<br/>
   SEE: <a href="https://blackly-exactly.netlify.app/">Deployed Website</a>
 </h1>
 
