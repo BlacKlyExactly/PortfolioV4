@@ -9,7 +9,7 @@
   SEE: <a href="https://blackly-exactly.netlify.app/">Deployed Website</a>
 </h1>
 
-My portfolio typed in typescript, powered by typescript
+## My portfolio written with typescript, powered by Gatsby
 
 <img src="https://i.imgur.com/WrEUpl1.png"/>
 
