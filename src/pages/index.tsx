@@ -1,14 +1,24 @@
-import React, { FC, MutableRefObject, useRef, useEffect } from "react"
+import React, { FC, useRef, useEffect, RefObject } from "react"
 import { PageProps, graphql, navigate } from "gatsby";
+import Wave from 'react-wavify';
+
+//@ts-ignore
 import AniLink from "gatsby-plugin-transition-link/AniLink";
+
 import Image, { FluidObject } from "gatsby-image";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"
-
+import useProjects, { Project } from "../hooks/useProjects";
 import { Pink, Coral } from "../assets/styles/colors";
+
+//@ts-ignore
 import * as Waves from "../assets/wave.svg";
+
+//@ts-ignore
 import * as Hero from "../assets/hero.svg";
+
+//@ts-ignore
 import * as Profile from "../assets/profile.svg";
 
 import PageSlider from "../components/PageSlider";
@@ -16,7 +26,7 @@ import ShowUp, { Direction } from "../components/ShowUp";
 import SkillCircle, { SkillCircleInfo } from "../components/SkillCircle";
 import SEO from "../components/seo"
 import Navigation from "../components/Navigation";
-import useProjects, { Project } from "../hooks/useProjects";
+import Particles from "../components/Particles";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -73,7 +83,7 @@ const LandingBackground = styled.div`
         height: 115vh !important;
     }
 
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 1150px){
         background-size: cover;
     }
 
@@ -95,7 +105,7 @@ const LandingDecorations = styled.span`
     right: 0;
     display: none;
     width: 43.896vw;
-    height: 50.250vw;
+    height: 100vh;
     background: linear-gradient(${Coral}, ${Pink});
     border-radius: 26.042vw 0 0 41.667vw;
 
@@ -126,9 +136,10 @@ const LandingWaves = styled.div`
     bottom: 0%;
     right: 0;
     width: 100vw;
+    height: 25%;
 
     @media screen and (min-width: 800px){
-      display: inherit;
+      display: flex;
     }
 `;
 
@@ -181,11 +192,11 @@ const LandingContentTitle = styled.div`
     }
 
     @media screen and (min-width: 800px){
-        font-size: 6.5vw;
+        font-size: 60px;
     }
 
     @media screen and (min-width: 1200px){
-        font-size: 3.5vw;
+        font-size: 35pxw;
     }
 `;
 
@@ -199,11 +210,11 @@ const LandingContentDescription = styled.div`
   }
 
   @media screen and (min-width: 800px){
-      font-size: 4.344vw;
+      font-size: 43px;
   }
 
   @media screen and (min-width: 1200px){
-      font-size: 1.5vw;
+      font-size: 25px;
   }
 `;
 
@@ -222,15 +233,15 @@ const LandingContentButton = styled.button`
     cursor: pointer;
    
     @media screen and (min-width: 800px){
-        width: 17.729vw;
-        height: 7.167vw;
-        font-size: 3vw;
+        width: 177px;
+        height: 72px;
+        font-size: 30px;
     }
 
     @media screen and (min-width: 1200px){
-        width: 9.729vw;
-        height: 3.567vw;
-        font-size: 1.3vw;
+        width: 170px;
+        height: 76px;
+        font-size: 30px;
     }
 `;
 
@@ -257,7 +268,7 @@ const MainTitle = styled.div`
     margin: 25px 0px;
 
     @media screen and (min-width: 1200px){
-        font-size: 2.865vw;
+        font-size: 50px
     }
 `;
 
@@ -287,7 +298,7 @@ const MainContentDescription = styled.div`
     }
 
     @media screen and (min-width: 1200px){
-        font-size: 0.9vw;
+        font-size: 17px;
         width: 100%;
         text-align: right;
     }
@@ -376,7 +387,7 @@ const LatestWorksTitle = styled.div`
     font-weight: 700;
 
     @media screen and (min-width: 1200px){
-        font-size: 2.5vw;
+        font-size: 50px;
     }
 `;
 
@@ -388,7 +399,8 @@ const LatestWorksDescription = styled.div`
     height: 50%;
 
     @media screen and (min-width: 1200px){
-        font-size: 1vw;
+        font-size: 18px;
+        width: 70%;
     }
 `;
 
@@ -480,62 +492,65 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
     const projects: Project[] = useProjects();
 
     useEffect(() => {
-      const [ heroElements ]: HTMLCollection = hero.current.children;
+        if(!hero.current) return;
 
-      const head: Element = heroElements.querySelector("#head");
-      const hand: Element = heroElements.querySelector("#hand");
-      const terminal: Element = heroElements.querySelector("#terminal");
-      const shadow: Element = heroElements.querySelector("#shadow");
+        const [ heroElements ]: HTMLCollection = hero.current.children;
 
-      gsap.to(head, {
-          duration: 3,
-          rotation: -30,
-          ease: "power1.inOut",
-          transformOrigin: "center center",
-          repeat: -1,
-          yoyo: true,
-          delay: 2,
-          repeatDelay: 1,
-      });
+        const head: Element | null = heroElements.querySelector("#head");
+        const hand: Element | null = heroElements.querySelector("#hand");
+        const terminal: Element | null = heroElements.querySelector("#terminal");
+        const shadow: Element | null = heroElements.querySelector("#shadow");
 
-      gsap.to(hand, { 
-          duration: 2, 
-          rotation: -25, 
-          ease: "power1.inOut", 
-          transformOrigin: 
-          "top center" ,
-          repeat: -1,
-          yoyo: true,
-          delay: 1,
-          repeatDelay: 1,
-      });
+        gsap.to(head, {
+            duration: 3,
+            rotation: -30,
+            ease: "power1.inOut",
+            transformOrigin: "center center",
+            repeat: -1,
+            yoyo: true,
+            delay: 2,
+            repeatDelay: 1,
+        });
 
-      gsap.to(terminal, {
-          duration: 3.5, 
-          y: -80, 
-          ease: "power1.inOut",
-          repeat: -1,
-          yoyo: true
-      });
+        gsap.to(hand, { 
+            duration: 2, 
+            rotation: -25, 
+            ease: "power1.inOut", 
+            transformOrigin: 
+            "top center" ,
+            repeat: -1,
+            yoyo: true,
+            delay: 1,
+            repeatDelay: 1,
+        });
 
-      gsap.to(shadow, { 
-          duration: 3.5, 
-          scale: 0.7, 
-          ease: "power1.inOut", 
-          transformOrigin: "center center",
-          repeat: -1,
-          yoyo: true 
-      });
+        gsap.to(terminal, {
+            duration: 3.5, 
+            y: -80, 
+            ease: "power1.inOut",
+            repeat: -1,
+            yoyo: true
+        });
 
-      gsap.from(image.current, {
-          duration: 0.8,
-          y: -50,
-          opacity: 0,
-          ease: "expo.inOut", 
-      })
+        gsap.to(shadow, { 
+            duration: 3.5, 
+            scale: 0.7, 
+            ease: "power1.inOut", 
+            transformOrigin: "center center",
+            repeat: -1,
+            yoyo: true 
+        });
+
+        gsap.from(image.current, {
+            duration: 0.8,
+            y: -50,
+            opacity: 0,
+            ease: "expo.inOut", 
+        })
     }, [ ]);
 
-    const scrollTo = ( element: MutableRefObject<HTMLDivElement> ) => {
+    const scrollTo = ( element: RefObject<HTMLDivElement> ) => {
+        if(!element.current) return;
         gsap.to(window, { duration: 1, scrollTo: element.current, ease: "expo.inOut" });
     }
 
@@ -553,10 +568,19 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                         fluid={background} 
                         style={{ height: "100vh" }}
                     />
+                    <Particles />
                 </LandingBackground>
                 <LandingDecorations/>
                 <LandingWaves>
-                    <Waves/>
+                    <Wave fill="#FFFFFF"
+                        paused={false}
+                        options={{
+                            height: 10,
+                            amplitude: 50,
+                            speed: 0.35,
+                            points: 4
+                        }}
+                    />
                 </LandingWaves>
                 <LandingHero ref={hero}>
                     <Hero/>
@@ -698,20 +722,18 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                         <LatestWorksField>
                             <LatestWorksTitle>Are you interested ?</LatestWorksTitle>
                             <LatestWorksDescription>
-                                See some of my latest work!<br/>
-                                Let's enjoy!<br/>
+                                See some of my latest work! Let's enjoy!
                                 *Pss* If you want to see more, you need navigate to 
                                 <AniLink cover to="/portfolio" bg="white">
-                                    <b> "portfolio"</b>
-                                </AniLink><br/>
-                                page
+                                    <u><b> "portfolio"</b></u>
+                                </AniLink> page
                             </LatestWorksDescription>
                         </LatestWorksField>
                         {
                             projects.slice(projects.length - 3, projects.length).map(( project: Project ) => (
                                 <LatestWorksField 
                                     key={project.link}
-                                    onClick={() => navigate(project.link)}
+                                    onClick={() => project.link && navigate(project.link)}
                                 >
                                     <LatestWorksImage themeColor={project.color}>
                                         <img src={project.image.url}/>

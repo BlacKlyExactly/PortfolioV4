@@ -1,8 +1,8 @@
 import React, { FC, useRef, useEffect } from "react";
 import styled from "styled-components";
-
-import * as Circle from "../assets/circle.svg";
 import { Coral } from "../assets/styles/colors";
+
+const Circle = require("../assets/circle.svg") as string;
 
 const Wrapper = styled.div`
     display: flex;
@@ -29,7 +29,7 @@ const Name = styled.span`
     width: 150px;
 
     @media screen and (min-width: 1200px){
-        font-size: 1.2vw;
+        font-size: 17px;
         width: 9vw;
         text-align: left;
     }
@@ -42,7 +42,7 @@ const Percentage = styled.span`
     color: ${Coral};
 
     @media screen and (min-width: 1200px){
-        font-size: 1.042vw;
+        font-size: 15px;
     }
 `;
 
@@ -77,9 +77,13 @@ const SkillCircle: FC<SkillCircleInfo> = ({ name, percentage }: SkillCircleInfo)
     const circleContainer = useRef<HTMLDivElement>(null);
  
     useEffect(() => {
-        const [ elements ]: HTMLCollection = circleContainer.current.children;
+        if(!circleContainer.current) return;
 
-        const circleFill: HTMLElement = elements.querySelector("#circleFill");
+        const [ elements ]: HTMLCollection = circleContainer.current.children;
+        const circleFill: HTMLElement | null = elements.querySelector("#circleFill");
+
+        if(!circleFill) return;
+
         circleFill.style.strokeDasharray = `${percentage}, 100`;
     }, [ ]);
 

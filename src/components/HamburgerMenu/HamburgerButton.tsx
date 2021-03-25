@@ -20,7 +20,7 @@ const Wrapper = styled.button`
         outline: none;
     }
 
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 1150px){
         display: none;
     }
 `;
@@ -51,6 +51,8 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({ open }) => {
     const lines = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
+        if(!lines.current) return;
+
         const [ line1, line2, line3 ] = lines.current.childNodes;
         
         timeline.to(line2, { opacity: 0, duration: 0.2, ease:"power2.inOut" }, 0)

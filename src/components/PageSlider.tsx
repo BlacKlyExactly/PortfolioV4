@@ -1,4 +1,4 @@
-import React, { FC, MutableRefObject, useRef, useState, useEffect } from "react";
+import React, { FC, MutableRefObject, useRef, useState, useEffect, RefObject } from "react";
 import styled, { css } from 'styled-components';
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/all";
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     justify-content: center;
     z-index: 90;
 
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 1150px){
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -60,7 +60,7 @@ const Dot = styled.button<DotProps>`
         }
     `}
     
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 1150px){
         height: 2.979vw;
         width: 2.979vw;
     }
@@ -72,7 +72,7 @@ const Dot = styled.button<DotProps>`
 `;
 
 type SliderProps = {
-    slides: Array<MutableRefObject<HTMLDivElement>>
+    slides: Array<RefObject<HTMLDivElement>>
 }
 
 const PageSlider: FC<SliderProps> = ({ slides }) => {
@@ -81,21 +81,23 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if(!sliderWrapper.current) return;
         gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.inOut", delay: 0.7 });
-
-        const handleScroll = () => {
-            slides.forEach(( element: MutableRefObject<HTMLDivElement>, index: number ) => {
-                if(!element.current) return;
-
-                const { y }: DOMRect = element.current.getBoundingClientRect();
-                window.scrollY > y && setSlide(index);
-            })    
-        }
 
         window.addEventListener("scroll", handleScroll);
     }, [ ]);
 
-    const handleDotClick = ( dotIndex: number, element: MutableRefObject<HTMLDivElement> ) => {
+    const handleScroll = () => {
+        slides.forEach(( element: RefObject<HTMLDivElement>, index: number ) => {
+            if(!element.current) return;
+
+            const { y }: DOMRect = element.current.getBoundingClientRect();
+            window.scrollY > y && setSlide(index);
+        })    
+    }
+
+    const handleDotClick = ( element: RefObject<HTMLDivElement> ) => {
+        if(!element.current) return;
         gsap.to(window, { scrollTo: element.current, ease: "expo.inOut" })
     }
     
@@ -103,8 +105,12 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     
     return(
         <Wrapper ref={sliderWrapper}>
-            {slides.map(( slide: MutableRefObject<HTMLDivElement>, index: number ) => (
-                <Dot key={index} active={isDotActive(index)} onClick={() => handleDotClick(index, slide)}/>
+            {slides.map(( slide: RefObject<HTMLDivElement>, index: number ) => (
+                <Dot 
+                    key={index} 
+                    active={isDotActive(index)} 
+                    onClick={() => handleDotClick(slide)}
+                />
             ))}
         </Wrapper>
     );

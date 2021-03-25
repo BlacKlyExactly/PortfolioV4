@@ -1,11 +1,12 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import AniLink from "gatsby-plugin-transition-link/AniLink";
 import gsap from "gsap";
-
 import { Pink, Coral } from "../../assets/styles/colors";
-
 import HamburgerButton from "./HamburgerButton";
+
+//@ts-ignore
+import AniLink from "gatsby-plugin-transition-link/AniLink";
+
 
 const HamburgerMenuPanel = styled.div`
     display: flex;
@@ -24,7 +25,7 @@ const HamburgerMenuPanel = styled.div`
         margin: 10px 0;
     }
 
-    @media screen and (min-width: 800px){
+    @media screen and (min-width: 1150px){
         display: none;
     }
 `;
@@ -54,6 +55,8 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ selects }) => {
     const panel = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if(!panel.current) return;
+
         timeline.from(panel.current, { x: "100%", duration: 0.5, ease: "expo.inOut" })
                 .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3, ease: "expo.inOut" })
                 .reverse();

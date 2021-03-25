@@ -1,5 +1,7 @@
 import React, { FC, useRef } from 'react';
 import styled, { css } from "styled-components";
+
+//@ts-ignore
 import AniLink from "gatsby-plugin-transition-link/AniLink";
 
 import HamburgerMenu, { NavSelect } from "./HamburgerMenu";
@@ -73,7 +75,7 @@ const Selects = styled.ul<SelectsProps>`
     margin: 0;
 
     ${({ isFull }) => !isFull && css`
-        @media screen and (min-width: 800px){
+        @media screen and (min-width: 1150px){
             width: 75vw;
         }
 
@@ -113,13 +115,8 @@ const Select = styled.li`
         transform-origin: right;
     }
 
-    @media screen and (min-width: 800px){
-        font-size: 2.2vw;
-        display: inherit;
-    }
-
-    @media screen and (min-width: 1200px){
-        font-size: 1.302vw;
+    @media screen and (min-width: 1150px){
+        font-size: 20px;
         display: inherit;
     }
 `;
@@ -138,16 +135,43 @@ const Navigation: FC<NavigationProps> = ({ isFull }) => {
 
     return(
         <Wrapper>
-            <ShowUp ref={logo} delay={0.5} duration={1.5} value={180} direction={toLeft}>
-                <AniLink cover to="/" bg="white">
-                    <Logo ref={logo}>Black</Logo>
+            <ShowUp 
+                ref={logo} 
+                delay={0.5} 
+                duration={1.5} 
+                value={180} 
+                direction={toLeft}
+            >
+                <AniLink 
+                    cover 
+                    to="/" 
+                    bg="white"
+                >
+                    <Logo ref={logo}>
+                        Black
+                    </Logo>
                 </AniLink>
             </ShowUp>
-                <ShowUp ref={selects} delay={0.4} duration={1} value={250} direction={toDown} stagger={0.1}>
+                <ShowUp 
+                    ref={selects} 
+                    delay={0.4} 
+                    duration={1} 
+                    value={250} 
+                    direction={toDown} 
+                    stagger={0.1}
+                >
                     <HamburgerMenu selects={navSelects}/>
-                    <Selects ref={selects} isFull={isFull}>
-                        {navSelects.map(({ display, path }: NavSelect, index: number) => (
-                            <AniLink cover to={path} bg="white" key={path}>
+                    <Selects 
+                        ref={selects} 
+                        isFull={isFull}
+                    >
+                        {navSelects.map(({ display, path }: NavSelect) => (
+                            <AniLink 
+                                cover 
+                                to={path} 
+                                bg="white" 
+                                key={path}
+                            >
                                 <Select>{display}</Select>
                             </AniLink>
                         ))}
