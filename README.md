@@ -11,7 +11,7 @@
 
 <h1>My portfolio written with typescript, powered by Gatsby</h1>
 
-<img src="https://i.imgur.com/WrEUpl1.png"/>
+<img src="https://i.imgur.com/IbvdAxz.png"/>
 
 ## 🚀 Quick start
 
