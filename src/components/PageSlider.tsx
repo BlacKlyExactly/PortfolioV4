@@ -1,10 +1,81 @@
-import React, { FC, MutableRefObject, useRef, useState, useEffect, RefObject } from "react";
+import React, { FC, useRef, useState, useEffect, RefObject } from "react";
 import styled, { css } from 'styled-components';
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/all";
 import { Coral } from "../assets/styles/colors";
 
 gsap.registerPlugin(ScrollToPlugin);
+
+const PageSlider: FC<SliderProps> = ({ slides }) => {
+    const [ slide, setSlide ] = useState(0);
+    const [ isScrolling, setScrollingState ] = useState<boolean>(false);
+
+    const sliderWrapper = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if(!sliderWrapper.current) return;
+
+        gsap.from(
+            sliderWrapper.current.children, 
+            { 
+                opacity: 0, 
+                y: -20, 
+                duration: 1, 
+                stagger: 0.1, 
+                ease: "expo.inOut", 
+                delay: 0.7 
+            }   
+        );
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [ ]);
+
+    const handleScroll = () => {
+        slides.forEach(( element: RefObject<HTMLDivElement>, index: number ) => {
+            if(!element.current || isScrolling) return;
+
+            const { y, height }: DOMRect = element.current.getBoundingClientRect();
+            window.scrollY > y + height / 2 && setSlide(index);
+        })    
+    }
+
+    const handleDotClick = async ( element: RefObject<HTMLDivElement> ) => {
+        if(!element.current) return;
+
+        setScrollingState(true);
+
+        gsap.to(
+            window, 
+            { 
+                scrollTo: element.current, 
+                ease: "expo.inOut", 
+                duration: 1 
+            }
+        ).then(() => setScrollingState(false));
+    }
+    
+    const isDotActive = ( index: number ): boolean => slide === index;
+    
+    return(
+        <Wrapper ref={sliderWrapper}>
+            {slides.map(( slide: RefObject<HTMLDivElement>, index: number ) => (
+                <Dot 
+                    key={index} 
+                    active={isDotActive(index)} 
+                    onClick={() => handleDotClick(slide)}
+                />
+            ))}
+        </Wrapper>
+    );
+};
+
+type SliderProps = {
+    slides: Array<RefObject<HTMLDivElement>>
+}
 
 const Wrapper = styled.div`
     position: fixed;
@@ -23,7 +94,6 @@ const Wrapper = styled.div`
         width: 10vw;
     }
 `;
-
 interface DotProps {
     active: boolean
 }
@@ -53,8 +123,6 @@ const Dot = styled.button<DotProps>`
     }
 
     ${({ active }) => active && css`
-        opacity: 100%;
-
         &::after{
             opacity: 100%;
         }
@@ -70,50 +138,5 @@ const Dot = styled.button<DotProps>`
         width: 1.979vw;
     }
 `;
-
-type SliderProps = {
-    slides: Array<RefObject<HTMLDivElement>>
-}
-
-const PageSlider: FC<SliderProps> = ({ slides }) => {
-    const [ slide, setSlide ] = useState(0);
-
-    const sliderWrapper = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if(!sliderWrapper.current) return;
-        gsap.from(sliderWrapper.current.children, { opacity: 0, y: -20, duration: 1, stagger: 0.1, ease: "expo.inOut", delay: 0.7 });
-
-        window.addEventListener("scroll", handleScroll);
-    }, [ ]);
-
-    const handleScroll = () => {
-        slides.forEach(( element: RefObject<HTMLDivElement>, index: number ) => {
-            if(!element.current) return;
-
-            const { y }: DOMRect = element.current.getBoundingClientRect();
-            window.scrollY > y && setSlide(index);
-        })    
-    }
-
-    const handleDotClick = ( element: RefObject<HTMLDivElement> ) => {
-        if(!element.current) return;
-        gsap.to(window, { scrollTo: element.current, ease: "expo.inOut" })
-    }
-    
-    const isDotActive = ( index: number ): boolean => slide === index;
-    
-    return(
-        <Wrapper ref={sliderWrapper}>
-            {slides.map(( slide: RefObject<HTMLDivElement>, index: number ) => (
-                <Dot 
-                    key={index} 
-                    active={isDotActive(index)} 
-                    onClick={() => handleDotClick(slide)}
-                />
-            ))}
-        </Wrapper>
-    );
-};
 
 export default PageSlider;

@@ -14,12 +14,13 @@ const blocks: BlockProps[] = [
 const Particles: FC = () => {
     return (
         <Wrapper>
-            {blocks.map(({ top, left, size, speed }: BlockProps ) => (
+            {blocks.map(({ top, left, size, speed }: BlockProps, index: number ) => (
                 <Block
                     top={top}
                     left={left}
                     size={size}
                     speed={speed}
+                    key={index}
                 />
             ))}
         </Wrapper>

@@ -54,10 +54,14 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
         if(!ref?.current || !direction) return;
         const elements: Element | HTMLCollection = stagger === 0 ? ref.current : ref.current.children;
 
+        let isShowed: boolean = false;
+
         const show = () => {
             const { y } = ref.current.getBoundingClientRect();
     
-            if(window.scrollY > y + scroll) {
+            if(window.scrollY > y + scroll && !isShowed) {
+                isShowed = true;
+
                 gsap.to(
                     elements, 
                     { 
@@ -67,8 +71,7 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
                         stagger, 
                         opacity: 1 
                     }
-                );
-
+                ).then(() => gsap.set(wrapper.current, { overflow: "visible" }))
             }
         }
 
