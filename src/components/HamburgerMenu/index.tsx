@@ -7,6 +7,46 @@ import HamburgerButton from "./HamburgerButton";
 //@ts-ignore
 import AniLink from "gatsby-plugin-transition-link/AniLink";
 
+export interface NavSelect {
+    display: string,
+    path: string,
+};
+
+const HamburgerMenu: FC<HamburgerMenuProps> = ({ selects, color }) => {
+    const [ timeline ] = useState(gsap.timeline({ paused: true }));
+
+    const panel = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if(!panel.current) return;
+
+        timeline.from(panel.current, { x: "100%", duration: 0.5, ease: "expo.inOut" })
+                .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3, ease: "expo.inOut" })
+                .reverse();
+    }, [ timeline ]);
+
+    const handleOpen = () => timeline.reversed(!timeline.reversed());
+
+    return(
+        <>
+            <HamburgerButton open={handleOpen} color={color}/>
+            <HamburgerMenuPanel ref={panel}>
+                {
+                    selects.map(({ path, display }: NavSelect) => (
+                        <AniLink cover to={path} bg="white" key={path}>
+                            <Select>{display}</Select>
+                        </AniLink>
+                    ))
+                }
+            </HamburgerMenuPanel>
+        </>
+    );
+}
+
+type HamburgerMenuProps = {
+    selects: Array<NavSelect>
+    color?: string
+}
 
 const HamburgerMenuPanel = styled.div`
     display: flex;
@@ -39,45 +79,5 @@ const Select = styled.button`
     font-size: 50px;
     border: none;
 `;
-
-export interface NavSelect {
-    display: string,
-    path: string,
-};
-
-type HamburgerMenuProps = {
-    selects: Array<NavSelect>
-}
-
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ selects }) => {
-    const [ timeline ] = useState(gsap.timeline({ paused: true }));
-
-    const panel = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if(!panel.current) return;
-
-        timeline.from(panel.current, { x: "100%", duration: 0.5, ease: "expo.inOut" })
-                .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3, ease: "expo.inOut" })
-                .reverse();
-    }, [ timeline ]);
-
-    const handleOpen = () => timeline.reversed(!timeline.reversed());
-
-    return(
-        <>
-            <HamburgerButton open={handleOpen}/>
-            <HamburgerMenuPanel ref={panel}>
-                {
-                    selects.map(({ path, display }: NavSelect) => (
-                        <AniLink cover to={path} bg="white" key={path}>
-                            <Select>{display}</Select>
-                        </AniLink>
-                    ))
-                }
-            </HamburgerMenuPanel>
-        </>
-    );
-}
 
 export default HamburgerMenu;

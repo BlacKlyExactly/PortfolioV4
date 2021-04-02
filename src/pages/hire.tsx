@@ -7,6 +7,14 @@ import Navigation from "../components/Navigation";
 
 import { Pink, Coral } from "../assets/styles/colors";
 
+const HirePage: FC<PageProps> = () => (
+    <Wrapper>
+        <Navigation isFull={true}/>
+        <SEO title="Hire"/>
+        <h1>Hire me!</h1>
+    </Wrapper>
+);
+
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -16,13 +24,5 @@ const Wrapper = styled.div`
     color: white;
     background: linear-gradient(${Pink}, ${Coral});
 `;
-
-const HirePage: FC<PageProps> = () => (
-    <Wrapper>
-        <Navigation isFull={true}/>
-        <SEO title="Hire"/>
-        <h1>Hire me!</h1>
-    </Wrapper>
-);
 
 export default HirePage;

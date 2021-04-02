@@ -1,7 +1,15 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
+import gsap from "gsap";
 
 import { Coral } from "../assets/styles/colors";
+
+const Footer: FC = () => (
+    <Wrapper>
+        <Title>BLACK</Title>
+        <Description>© 2020 Sebastan Matkowski. All rights reserved</Description>
+    </Wrapper>
+);
 
 const Wrapper = styled.footer`
     display: flex;
@@ -25,12 +33,5 @@ const Description = styled.span`
     font-size:15px;
     text-align: center;
 `;
-
-const Footer: FC = () => (
-    <Wrapper>
-        <Title>BLACK</Title>
-        <Description>© 2020 Sebastan Matkowski. All rights reserved</Description>
-    </Wrapper>
-);
 
 export default Footer;

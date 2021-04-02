@@ -7,15 +7,93 @@ import AniLink from "gatsby-plugin-transition-link/AniLink";
 import HamburgerMenu, { NavSelect } from "./HamburgerMenu";
 import ShowUp, { Direction } from "./ShowUp";
 
-const Wrapper = styled.nav`
-    position: absolute;
+const navSelects: Array<NavSelect> = [
+    { display: "Portfolio", path: "/portfolio"},
+    { display: "Hire Me!", path: "/hire"},
+    { display: "Contact", path: "/contact"}
+]
+
+const Navigation: FC<NavigationProps> = ({ isFull, color, position, background }) => {
+    const logo = useRef<HTMLDivElement>(null);
+    const selects = useRef<HTMLUListElement>(null);
+
+    const { toDown, toLeft } = Direction;
+
+    return(
+        <Wrapper 
+            pos={position}
+            background={background}
+        >
+            <ShowUp 
+                ref={logo} 
+                delay={0.5} 
+                duration={1.5} 
+                value={180} 
+                direction={toLeft}
+            >
+                <AniLink 
+                    cover 
+                    to="/" 
+                    bg="white"
+                >
+                    <Logo ref={logo} color={color}>
+                        Black
+                    </Logo>
+                </AniLink>
+            </ShowUp>
+                <ShowUp 
+                    ref={selects} 
+                    delay={0.4} 
+                    duration={1} 
+                    value={250} 
+                    direction={toDown} 
+                    stagger={0.1}
+                >
+                    <HamburgerMenu 
+                        selects={navSelects}
+                        color={color}
+                    />
+                    <Selects 
+                        ref={selects} 
+                        isFull={isFull}
+                    >
+                        {navSelects.map(({ display, path }: NavSelect) => (
+                            <AniLink 
+                                cover 
+                                to={path} 
+                                bg="white" 
+                                key={path}
+                            >
+                                <Select color={color}>{display}</Select>
+                            </AniLink>
+                        ))}
+                    </Selects>
+                </ShowUp>
+        </Wrapper>
+    )
+}
+
+type NavigationProps = {
+    isFull?: boolean
+    color?: string,
+    position?: string,
+    background?: string,
+}
+
+type WrapperProps = {
+    pos?: string,
+    background?: string,
+}
+
+const Wrapper = styled.nav<WrapperProps>`
+    position: ${({ pos }) => pos || "absolute"};
     display: flex;
     align-items: center;
     top: 0;
     left: 0;
     width: 100vw;
     height: 85px;
-    background: transparent;
+    background: ${({ background }) => background || "transparent"};
     z-index: 100;
 
     @media screen and (min-width: 800px){
@@ -27,11 +105,14 @@ const Wrapper = styled.nav`
     }
 `;
 
-const Logo = styled.div`
+type SelectProps = {
+    color?: string
+}
+
+const Logo = styled.div<SelectProps>`
     position: relative;
     font-size: 35px;
     font-weight: 700;
-    color: white;
     z-index: 100;
     margin-left: 29px;
     padding-top: 10px;
@@ -51,15 +132,17 @@ const Logo = styled.div`
         height: 20%;
         top: -10%;
         left: 0;
-        background: white;
         transform: scaleX(0);
         transition: transform 0.2s;
         transform-origin: right;
+        background: ${({ color }) => color ? color : "white" };
     }
 
     @media screen and (min-width: 800px){
         margin-left: 3.5vw;
     }
+
+    color: ${({ color }) => color ? color : "white" };
 `;
 
 interface SelectsProps{
@@ -85,11 +168,10 @@ const Selects = styled.ul<SelectsProps>`
     `}
 `;
 
-const Select = styled.li`
+const Select = styled.li<SelectProps>`
     position: relative;
     display: none;
     font-size: 25px;
-    color: white;
     font-weight: 700;
     letter-spacing: 0.08vw;
     margin: 0 19px;
@@ -109,80 +191,18 @@ const Select = styled.li`
         height: 20%;
         top: -10%;
         left: 0;
-        background: white;
         transform: scaleX(0);
         transition: transform 0.2s;
         transform-origin: right;
+        background: ${({ color }) => color ? color : "white" };
     }
 
     @media screen and (min-width: 1150px){
         font-size: 20px;
         display: inherit;
     }
+
+    color: ${({ color }) => color ? color : "white" };
 `;
-
-const navSelects: Array<NavSelect> = [
-    { display: "Portfolio", path: "/portfolio"},
-    { display: "Hire Me!", path: "/hire"},
-    { display: "Contact", path: "/contact"}
-]
-
-const Navigation: FC<NavigationProps> = ({ isFull }) => {
-    const logo = useRef<HTMLDivElement>(null);
-    const selects = useRef<HTMLUListElement>(null);
-
-    const { toDown, toLeft } = Direction;
-
-    return(
-        <Wrapper>
-            <ShowUp 
-                ref={logo} 
-                delay={0.5} 
-                duration={1.5} 
-                value={180} 
-                direction={toLeft}
-            >
-                <AniLink 
-                    cover 
-                    to="/" 
-                    bg="white"
-                >
-                    <Logo ref={logo}>
-                        Black
-                    </Logo>
-                </AniLink>
-            </ShowUp>
-                <ShowUp 
-                    ref={selects} 
-                    delay={0.4} 
-                    duration={1} 
-                    value={250} 
-                    direction={toDown} 
-                    stagger={0.1}
-                >
-                    <HamburgerMenu selects={navSelects}/>
-                    <Selects 
-                        ref={selects} 
-                        isFull={isFull}
-                    >
-                        {navSelects.map(({ display, path }: NavSelect) => (
-                            <AniLink 
-                                cover 
-                                to={path} 
-                                bg="white" 
-                                key={path}
-                            >
-                                <Select>{display}</Select>
-                            </AniLink>
-                        ))}
-                    </Selects>
-                </ShowUp>
-        </Wrapper>
-    )
-}
-
-type NavigationProps = {
-    isFull?: boolean
-}
 
 export default Navigation;

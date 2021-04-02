@@ -4,47 +4,23 @@ import gsap from "gsap";
 
 import { Pink, Coral } from "../../assets/styles/colors";
 
-const Wrapper = styled.button`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 42px;
-    border: none;
-    background: transparent;
-    padding: 10px 0 0 0;
-    z-index: 90;
-    margin-left: auto;
-    margin-right: 20px;
-
-    &:focus{
-        outline: none;
-    }
-
-    @media screen and (min-width: 1150px){
-        display: none;
-    }
-`;
-
 interface LineProps {
     opened: boolean
+    color?: string
 };
 
 const Line = styled.span<LineProps>`
     width: 100%;
     height: 6px;
-    background: white;
     margin: 4px 0;
+    background: ${({ color }) => color || "white"};
 
     ${({ opened }) => opened && css`
         background: linear-gradient(${Pink}, ${Coral});
     `}
 `;
 
-type HamburgerButtonProps = {
-    open(): void
-}
-
-const HamburgerButton: FC<HamburgerButtonProps> = ({ open }) => {
+const HamburgerButton: FC<HamburgerButtonProps> = ({ open, color }) => {
     const [ timeline ] = useState(gsap.timeline({ paused: true }));
     const [ opened, setOpenedState ] = useState(false);
 
@@ -69,11 +45,37 @@ const HamburgerButton: FC<HamburgerButtonProps> = ({ open }) => {
 
     return(
         <Wrapper ref={lines} onClick={handleHamburgerClick}>
-            <Line opened={opened}/>
-            <Line opened={opened}/>
-            <Line opened={opened}/>
+            <Line opened={opened} color={color}/>
+            <Line opened={opened} color={color}/>
+            <Line opened={opened} color={color}/>
         </Wrapper>
     )
 }
+
+type HamburgerButtonProps = {
+    open(): void,
+    color?: string
+}
+
+const Wrapper = styled.button`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 42px;
+    border: none;
+    background: transparent;
+    padding: 10px 0 0 0;
+    z-index: 90;
+    margin-left: auto;
+    margin-right: 20px;
+
+    &:focus{
+        outline: none;
+    }
+
+    @media screen and (min-width: 1150px){
+        display: none;
+    }
+`;
 
 export default HamburgerButton;

@@ -134,7 +134,7 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                         fluid={background} 
                         style={{ height: "100vh" }}
                     />
-                    <Particles />
+                    <Particles opacity={0.2}/>
                 </LandingBackground>
                 <LandingDecorations/>
                 <LandingWaves>
@@ -290,7 +290,7 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                                 </AniLink> page
                             </LatestWorksDescription>
                         </LatestWorksField>
-                            {projects.slice(projects.length - 3, projects.length).map(( project: Project ) => (
+                            {projects.slice(0, 3).map(( project: Project ) => (
                                 <LatestWorksField 
                                     key={project.link}
                                     onClick={() => project.link && navigate(project.link)}

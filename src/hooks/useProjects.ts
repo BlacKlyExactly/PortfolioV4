@@ -6,7 +6,9 @@ const useProjects = (): Project[] => {
             allDatoCmsProject{
                     nodes{
                     link
-                    color
+                    color,
+                    title,  
+                    tags,
                     image {
                         url
                     }
@@ -23,7 +25,9 @@ export type Project = {
         url: string
     }
     link?: string,
-    color: string
+    color: string,
+    title: string,
+    tags: string
 }
 
 export default useProjects;

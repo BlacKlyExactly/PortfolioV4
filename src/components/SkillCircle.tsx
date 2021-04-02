@@ -4,6 +4,36 @@ import { Coral } from "../assets/styles/colors";
 
 const Circle = require("../assets/circle.svg") as string;
 
+export interface SkillCircleInfo {
+    name: string,
+    percentage: number
+}
+
+const SkillCircle: FC<SkillCircleInfo> = ({ name, percentage }: SkillCircleInfo) => {
+    const circleContainer = useRef<HTMLDivElement>(null);
+ 
+    useEffect(() => {
+        if(!circleContainer.current) return;
+
+        const [ elements ]: HTMLCollection = circleContainer.current.children;
+        const circleFill: HTMLElement | null = elements.querySelector("#circleFill");
+
+        if(!circleFill) return;
+
+        circleFill.style.strokeDasharray = `${percentage}, 100`;
+    }, [ ]);
+
+    return(
+        <Wrapper>
+            <SkillCircleContainer ref={circleContainer}>
+                <Circle />
+                <Percentage>{`${percentage}%`}</Percentage>
+            </SkillCircleContainer>
+            <Name>{name}</Name>
+        </Wrapper>
+    )
+};
+
 const Wrapper = styled.div`
     display: flex;
     align-items: center;
@@ -67,35 +97,5 @@ const SkillCircleContainer = styled.div`
         stroke: ${Coral};
     }
 `;
-
-export interface SkillCircleInfo {
-    name: string,
-    percentage: number
-}
-
-const SkillCircle: FC<SkillCircleInfo> = ({ name, percentage }: SkillCircleInfo) => {
-    const circleContainer = useRef<HTMLDivElement>(null);
- 
-    useEffect(() => {
-        if(!circleContainer.current) return;
-
-        const [ elements ]: HTMLCollection = circleContainer.current.children;
-        const circleFill: HTMLElement | null = elements.querySelector("#circleFill");
-
-        if(!circleFill) return;
-
-        circleFill.style.strokeDasharray = `${percentage}, 100`;
-    }, [ ]);
-
-    return(
-        <Wrapper>
-            <SkillCircleContainer ref={circleContainer}>
-                <Circle />
-                <Percentage>{`${percentage}%`}</Percentage>
-            </SkillCircleContainer>
-            <Name>{name}</Name>
-        </Wrapper>
-    )
-};
 
 export default SkillCircle;
