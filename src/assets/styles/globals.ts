@@ -9,11 +9,11 @@ const GlobalStyles = createGlobalStyle`
   *::before,
   *::after{
     box-sizing: inherit;
+    font-family: "Montserrat";
   }
 
   body{
     margin: 0;
-    font-family: "Montserrat";
   }
 
   h1{
