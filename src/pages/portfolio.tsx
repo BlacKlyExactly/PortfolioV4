@@ -29,6 +29,7 @@ const PortfolioPage: FC<PageProps> = () => {
 
     const filterWorks = ( projects: Project[] ): Project[] => {
         if(!searchValue) return projects;
+        
         const filtredWorks = 
             projects.filter(( project: Project ) => 
                 project.title.toLowerCase()
@@ -52,6 +53,7 @@ const PortfolioPage: FC<PageProps> = () => {
                     value={searchValue}
                     onChange={handleInputChange}
                     placeholder="Search project..."
+                    type="search"
                 />
             </SearchForm>
             <Projects ref={works}>

@@ -50,30 +50,6 @@ const Wrapper = styled.div`
     cursor: pointer;
     border: .15vw solid ${({ color }) => color};
 
-    &:hover{
-        &::after{
-            opacity: 0.5;
-        }
-    }
-
-    &::after{
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 65%;
-        background: linear-gradient(${Pink}, ${Coral});
-        opacity: 0;
-        border-radius: 25px;
-        transition: 0.2s opacity;
-        bottom: 0;
-
-        @media screen and (min-width: 1150px){
-            height: 74%;
-            border-radius: 2.5vw;
-            z-index: 1;
-        }
-    }
-
     @media screen and (min-width: 1150px){
         width: 519px;
         height: 360px;
@@ -88,11 +64,39 @@ type ImageProps = {
 
 const Image = styled.div<ImageProps>`
     position: relative;
+    overflow: hidden;
     width: 100%;
     height: 65%;
     border-radius: 25px;
     background: url(${({ url }) => url});
-    background-size: cover;
+    background-size: 100%;
+    background-position: center;
+    transition: 0.2s background-size;
+
+    &:hover{
+        background-size: 110%;
+
+        &::after{
+            opacity: 0.5;
+        }
+    }
+
+    &::after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(${Pink}, ${Coral});
+        opacity: 0;
+        border-radius: 25px;
+        transition: 0.2s opacity;
+
+        @media screen and (min-width: 1150px){
+            border-radius: 2.5vw;
+            z-index: 1;
+        }
+    }
+
 
     @media screen and (min-width: 1150px){
         height: 74%;

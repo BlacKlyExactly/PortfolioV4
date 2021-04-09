@@ -1,3 +1,5 @@
+const createProxyMiddleware = require("http-proxy-middleware");
+
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
@@ -5,6 +7,17 @@ require('dotenv').config({
 const config = require('gatsby-plugin-config').default;
 
 module.exports = {
+  developMiddleware: app => {
+    app.use(
+      "/.netlify/functions/",
+      createProxyMiddleware({
+        target: "http://localhost:9000",
+        pathRewrite: {
+          "/.netlify/functions/": "",
+        },
+      })
+    )
+  },
   siteMetadata: {
     title: `Black's Portfolio`,
     description: `
@@ -68,6 +81,13 @@ module.exports = {
         apiToken: config.DATO_KEY,
         disableLiveReload: false,
         preview: false,
+      },
+    },
+     {
+      resolve: `gatsby-plugin-netlify-functions`,
+      options: {
+        functionsSrc: `${__dirname}/src/functions`,
+        functionsOutput: `${__dirname}/functions`,
       },
     },
   ],
