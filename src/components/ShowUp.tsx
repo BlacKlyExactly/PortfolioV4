@@ -38,12 +38,9 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
 (({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref ) => {
     const wrapper = useRef<HTMLDivElement>(null);
 
-    const isDesktop = useMediaQuery({
-        query: '(min-width: 1150px)'
-    })
-
     useEffect(() => {
-        if(!ref?.current || !direction || !isDesktop){
+
+        if(!ref?.current || !direction){
             gsap.set(wrapper.current, { overflow: "visible" });
             return;
         }
@@ -55,7 +52,7 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
         const show = () => {
             const { y } = ref.current.getBoundingClientRect();
     
-            if(window.scrollY > y + scroll && !isShowed && isDesktop) {
+            if(window.scrollY > y + scroll && !isShowed) {
                 isShowed = true;
 
                 gsap.to(
@@ -82,6 +79,7 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
                     stagger 
                 }
             )
+            
             return;
         }
         
@@ -129,9 +127,7 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-    ${({ isDesktop }) => isDesktop && css`
-        overflow: hidden;
-    `}
+    overflow: hidden;
 
     ${({ center }) => center && css`
         display: flex;

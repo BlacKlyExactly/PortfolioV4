@@ -1,7 +1,6 @@
 import React, { FC, useRef, useEffect, RefObject } from "react";
 import { PageProps, graphql, navigate } from "gatsby";
 import Wave from 'react-wavify';
-import { useMediaQuery } from "react-responsive";
 
 //@ts-ignore
 import AniLink from "gatsby-plugin-transition-link/AniLink";
@@ -57,10 +56,6 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
     const worksGrid = useRef<HTMLDivElement>(null);
 
     const projects: Project[] = useProjects();
-
-    const isDesktop = useMediaQuery({
-        query: '(min-width: 1150px)'
-    })
 
     useEffect(() => {
         if(!hero.current) return;
@@ -142,20 +137,18 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                     <Particles opacity={0.2}/>
                 </LandingBackground>
                 <LandingDecorations/>
-                {isDesktop && (
-                    <LandingWaves>
-                        <Wave 
-                            fill="#FFFFFF"
-                            paused={false}
-                            options={{
-                                height: 20,
-                                amplitude: 50,
-                                speed: 0.35,
-                                points: 4
-                            }}
-                        />
-                    </LandingWaves>
-                )}
+                <LandingWaves>
+                    <Wave 
+                        fill="#FFFFFF"
+                        paused={false}
+                        options={{
+                            height: 20,
+                            amplitude: 50,
+                            speed: 0.35,
+                            points: 4
+                        }}
+                    />
+                </LandingWaves>
                 <LandingHero ref={hero}>
                     <Hero/>
                 </LandingHero>

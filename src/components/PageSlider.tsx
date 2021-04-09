@@ -32,7 +32,7 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
 
         return () => {
             window.removeEventListener("wheel", handleScroll);
-            window.removeEventListener("touchmove", handleScroll);
+            window.removeEventListener("touchmove   ", handleScroll);
         }
     }, [ ]);
 
