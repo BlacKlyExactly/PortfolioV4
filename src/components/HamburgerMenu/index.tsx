@@ -21,7 +21,7 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ selects, color }) => {
         if(!panel.current) return;
 
         timeline.from(panel.current, { x: "100%", duration: 0.5, ease: "expo.inOut" })
-                .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3, ease: "expo.inOut" })
+                .from(panel.current.childNodes, { x: -10, opacity: 0, stagger: 0.1, duration: 0.3 })
                 .reverse();
     }, [ timeline ]);
 

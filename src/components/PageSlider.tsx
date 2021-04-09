@@ -27,10 +27,12 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
             }   
         );
 
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("wheel", handleScroll);
+        window.addEventListener("touchmove", handleScroll);
 
         return () => {
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("wheel", handleScroll);
+            window.removeEventListener("touchmove", handleScroll);
         }
     }, [ ]);
 
@@ -38,20 +40,21 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
         slides.forEach(( element: RefObject<HTMLDivElement>, index: number ) => {
             if(!element.current || isScrolling) return;
 
-            const { y, height }: DOMRect = element.current.getBoundingClientRect();
-            window.scrollY > y + height / 2 && setSlide(index);
+            const { y } = element.current.getBoundingClientRect();
+            window.scrollY > ( y + window.innerHeight / 2) / 1.5 && setSlide(index);
         })    
     }
 
-    const handleDotClick = async ( element: RefObject<HTMLDivElement> ) => {
+    const handleDotClick = async ( element: RefObject<HTMLDivElement>, index: number ) => {
         if(!element.current) return;
 
         setScrollingState(true);
-
+        setSlide(index);
+        
         gsap.to(
             window, 
             { 
-                scrollTo: element.current, 
+                scrollTo: element.current,
                 ease: "expo.inOut", 
                 duration: 1 
             }
@@ -66,7 +69,7 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
                 <Dot 
                     key={index} 
                     active={isDotActive(index)} 
-                    onClick={() => handleDotClick(slide)}
+                    onClick={() => handleDotClick(slide, index)}
                 />
             ))}
         </Wrapper>

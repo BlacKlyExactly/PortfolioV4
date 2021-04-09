@@ -9,19 +9,7 @@ import React, {
 
 import styled, { css } from "styled-components";
 import gsap from "gsap";
-interface WrapperProps {
-    center: boolean
-}
-
-const Wrapper = styled.div<WrapperProps>`
-    overflow: hidden;
-
-    ${({ center }) => center && css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `}
-`;
+import { useMediaQuery } from "react-responsive";
 
 export enum Direction{
     toTop = 1,
@@ -50,8 +38,16 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
 (({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref ) => {
     const wrapper = useRef<HTMLDivElement>(null);
 
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1150px)'
+    })
+
     useEffect(() => {
-        if(!ref?.current || !direction) return;
+        if(!ref?.current || !direction || !isDesktop){
+            gsap.set(wrapper.current, { overflow: "visible" });
+            return;
+        }
+
         const elements: Element | HTMLCollection = stagger === 0 ? ref.current : ref.current.children;
 
         let isShowed: boolean = false;
@@ -59,7 +55,7 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
         const show = () => {
             const { y } = ref.current.getBoundingClientRect();
     
-            if(window.scrollY > y + scroll && !isShowed) {
+            if(window.scrollY > y + scroll && !isShowed && isDesktop) {
                 isShowed = true;
 
                 gsap.to(
@@ -75,7 +71,7 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
             }
         }
 
-        scroll === 0 ?
+        if(scroll === 0){
             gsap.from(
                 elements, 
                 { 
@@ -85,18 +81,20 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
                     ease: "expo.out", 
                     stagger 
                 }
-            ) : 
-            gsap.set(
-                elements, 
-                { 
-                    [ getDirection(direction) ]:  getValue(direction, value) 
-                }
-            );
-
-        if(scroll !== 0) {
-            window.addEventListener("scroll", show);
-            show();
+            )
+            return;
         }
+        
+        
+        gsap.set(
+            elements, 
+            { 
+                [ getDirection(direction) ]:  getValue(direction, value) 
+            }
+        );
+
+        window.addEventListener("scroll", show);
+        show();
 
         return () => {
             scroll !== 0 && window.removeEventListener("scroll", show);
@@ -104,7 +102,11 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
     }, [ ])
 
     return(
-        <Wrapper ref={wrapper} center={center}>
+        <Wrapper 
+            ref={wrapper} 
+            center={center}
+            isDesktop={isDesktop}
+        >
             {children}
         </Wrapper>
     )
@@ -120,6 +122,23 @@ type ShowUpProps = {
     scroll?: number,
     center?: boolean,
 };
+
+interface WrapperProps {
+    center: boolean,
+    isDesktop: boolean
+}
+
+const Wrapper = styled.div<WrapperProps>`
+    ${({ isDesktop }) => isDesktop && css`
+        overflow: hidden;
+    `}
+
+    ${({ center }) => center && css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `}
+`;
 
 
 export default ShowUp;

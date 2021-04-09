@@ -43,6 +43,7 @@ const PortfolioPage: FC<PageProps> = () => {
         <Wrapper>
             <Navigation 
                 isFull 
+                fixedInMobile
                 color={Pink}
                 position="relative"
                 background="white"
@@ -101,7 +102,11 @@ const SearchForm = styled.form`
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 5%;
+    margin-top: 110px;
+
+    @media screen and (min-width: 1150px){
+        margin-top: 5%;
+    }
 `;
 
 const SearchFormInput = styled.input`

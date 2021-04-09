@@ -13,7 +13,7 @@ const navSelects: Array<NavSelect> = [
     { display: "Contact", path: "/contact"}
 ]
 
-const Navigation: FC<NavigationProps> = ({ isFull, color, position, background }) => {
+const Navigation: FC<NavigationProps> = ({ isFull, color, position, background, fixedInMobile }) => {
     const logo = useRef<HTMLDivElement>(null);
     const selects = useRef<HTMLUListElement>(null);
 
@@ -23,6 +23,7 @@ const Navigation: FC<NavigationProps> = ({ isFull, color, position, background }
         <Wrapper 
             pos={position}
             background={background}
+            fixedInMobile={fixedInMobile}
         >
             <ShowUp 
                 ref={logo} 
@@ -78,26 +79,32 @@ type NavigationProps = {
     color?: string,
     position?: string,
     background?: string,
+    fixedInMobile?: boolean
 }
 
 type WrapperProps = {
     pos?: string,
     background?: string,
+    fixedInMobile?: boolean
 }
 
 const Wrapper = styled.nav<WrapperProps>`
-    position: ${({ pos }) => pos || "absolute"};
+    position: ${({ fixedInMobile }) => fixedInMobile ? "fixed" : "absolute"};
     display: flex;
     align-items: center;
+    justify-content: space-between;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 85px;
+    height: 110px;
     background: ${({ background }) => background || "transparent"};
     z-index: 100;
+    padding: 0 10%;
 
     @media screen and (min-width: 800px){
         height: 10vw;
+        position: ${({ pos }) => pos || "absolute"};
+        padding: 0 2%;
     }
 
     @media screen and (min-width: 1200px){
@@ -114,9 +121,6 @@ const Logo = styled.div<SelectProps>`
     font-size: 35px;
     font-weight: 700;
     z-index: 100;
-    margin-left: 29px;
-    padding-top: 10px;
-    padding-right: 60px;
 
     &:hover{
         &::after{
@@ -151,8 +155,6 @@ interface SelectsProps{
 
 const Selects = styled.ul<SelectsProps>`
     display: flex;
-    width: 85vw;
-    justify-content: flex-end;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -163,7 +165,7 @@ const Selects = styled.ul<SelectsProps>`
         }
 
         @media screen and (min-width: 1200px){
-            width: 43vw;
+            width: 68vw;
         }
     `}
 `;

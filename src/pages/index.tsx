@@ -1,6 +1,7 @@
-import React, { FC, useRef, useEffect, RefObject } from "react"
+import React, { FC, useRef, useEffect, RefObject } from "react";
 import { PageProps, graphql, navigate } from "gatsby";
 import Wave from 'react-wavify';
+import { useMediaQuery } from "react-responsive";
 
 //@ts-ignore
 import AniLink from "gatsby-plugin-transition-link/AniLink";
@@ -30,7 +31,7 @@ import Particles from "../components/Particles";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-const { toTop, toDown, toLeft, toRight } = Direction;
+const { toTop, toDown, toLeft } = Direction;
 
 const skillInfo: Array<SkillCircleInfo> = [
   { name: "TypeScript", percentage: 85 }, 
@@ -56,6 +57,10 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
     const worksGrid = useRef<HTMLDivElement>(null);
 
     const projects: Project[] = useProjects();
+
+    const isDesktop = useMediaQuery({
+        query: '(min-width: 1150px)'
+    })
 
     useEffect(() => {
         if(!hero.current) return;
@@ -137,17 +142,20 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                     <Particles opacity={0.2}/>
                 </LandingBackground>
                 <LandingDecorations/>
-                <LandingWaves>
-                    <Wave fill="#FFFFFF"
-                        paused={false}
-                        options={{
-                            height: 20,
-                            amplitude: 50,
-                            speed: 0.35,
-                            points: 4
-                        }}
-                    />
-                </LandingWaves>
+                {isDesktop && (
+                    <LandingWaves>
+                        <Wave 
+                            fill="#FFFFFF"
+                            paused={false}
+                            options={{
+                                height: 20,
+                                amplitude: 50,
+                                speed: 0.35,
+                                points: 4
+                            }}
+                        />
+                    </LandingWaves>
+                )}
                 <LandingHero ref={hero}>
                     <Hero/>
                 </LandingHero>
@@ -523,6 +531,7 @@ const LandingContentDescription = styled.div`
 `;
 
 const LandingContentButton = styled.button`
+    position: relative;
     width: 130px;
     height: 54px;
     background: linear-gradient(${Coral} 30%, ${Pink} 91%);
@@ -536,17 +545,9 @@ const LandingContentButton = styled.button`
     margin-top: 40px;
     cursor: pointer;
 
-    &:hover{
-        &::before{
-            opacity: 1;
-        }
-
-        span{
-            background: linear-gradient(${Coral} 30%, ${Pink} 91%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    span{
+        position: relative;
+        z-index: 2;
     }
 
     &::before{
@@ -560,7 +561,20 @@ const LandingContentButton = styled.button`
         border-radius: 50vw;
         transition: .2s opacity;
         opacity: 0;
-        z-index: -1;
+        z-index: 1;
+    }
+
+    &:hover{
+        &::before{
+            opacity: 1;
+        }
+
+        span{
+            background: linear-gradient(${Coral} 30%, ${Pink} 91%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     }
    
     @media screen and (min-width: 800px){

@@ -123,12 +123,6 @@ const ContactPage: FC<PageProps> = () => {
     return(
         <Wrapper>
             <SEO title="Contact"/>
-            <Navigation 
-                position="relative"
-                isFull
-                color={Coral}
-                background="white"
-            />
             <Content>
                 <FindMeOn>
                     <FindMeOnSites ref={links}>
@@ -141,13 +135,6 @@ const ContactPage: FC<PageProps> = () => {
                             </a>
                         ))}
                     </FindMeOnSites>
-                    <iframe 
-                        src="https://discord.com/widget?id=719997069263372328&theme=dark" 
-                        width="100%" 
-                        height="400px" 
-                        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                    >
-                    </iframe>
                 </FindMeOn>
                 <SendQuestion>
                     {loadingState ? <Loader/> : (
@@ -193,6 +180,13 @@ const ContactPage: FC<PageProps> = () => {
                     )}
                 </SendQuestion>
             </Content>
+            <Navigation 
+                position="relative"
+                isFull
+                fixedInMobile
+                color={Coral}
+                background="white"
+            />
         </Wrapper>
     )
 };
@@ -270,7 +264,7 @@ const SendQuestionTextArea = styled.textarea`
 `;
 
 const SendQuestionButtons = styled.div`
-    width: 88%;
+    width: 100%;
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
@@ -278,6 +272,7 @@ const SendQuestionButtons = styled.div`
     @media screen and (min-width: 1150px){
         justify-content: space-between;
         flex-direction: row;
+        width: 88%;
     }
 `;
 
@@ -304,16 +299,19 @@ const FindMeOn = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    min-height: 100vh;
+    justify-content: center;
+    min-height: 55vh;
     width: 100%;
     background: ${Coral};
     color: white;
     padding: 4%;
+    margin-top: 110px;
 
     @media screen and (min-width: 1150px){
         width: 800px;
-        min-height: 105vh;
+        height: 100vh;
+        margin: 0;
+        padding: 4%;
     }
 `;
 

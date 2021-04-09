@@ -4,22 +4,6 @@ import gsap from "gsap";
 
 import { Pink, Coral } from "../../assets/styles/colors";
 
-interface LineProps {
-    opened: boolean
-    color?: string
-};
-
-const Line = styled.span<LineProps>`
-    width: 100%;
-    height: 6px;
-    margin: 4px 0;
-    background: ${({ color }) => color || "white"};
-
-    ${({ opened }) => opened && css`
-        background: linear-gradient(${Pink}, ${Coral});
-    `}
-`;
-
 const HamburgerButton: FC<HamburgerButtonProps> = ({ open, color }) => {
     const [ timeline ] = useState(gsap.timeline({ paused: true }));
     const [ opened, setOpenedState ] = useState(false);
@@ -61,13 +45,13 @@ const Wrapper = styled.button`
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 42px;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
     border: none;
     background: transparent;
-    padding: 10px 0 0 0;
     z-index: 90;
-    margin-left: auto;
-    margin-right: 20px;
+    margin: 0;
 
     &:focus{
         outline: none;
@@ -76,6 +60,23 @@ const Wrapper = styled.button`
     @media screen and (min-width: 1150px){
         display: none;
     }
+`;
+
+
+interface LineProps {
+    opened: boolean
+    color?: string
+};
+
+const Line = styled.span<LineProps>`
+    width: 100%;
+    height: 6px;
+    margin: 4px 0;
+    background: ${({ color }) => color || "white"};
+
+    ${({ opened }) => opened && css`
+        background: linear-gradient(${Pink}, ${Coral});
+    `}
 `;
 
 export default HamburgerButton;
