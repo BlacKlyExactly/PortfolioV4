@@ -11,6 +11,7 @@ import gsap from "gsap";
 import SEO from "../components/seo";
 import TextInput from "../components/TextInput";
 import Loader from "../components/Loader";
+import Navigation from "../components/Navigation";
 
 import useMail from "../hooks/useMail";
 import { Coral, Gray } from "../assets/styles/colors";
@@ -122,6 +123,12 @@ const ContactPage: FC<PageProps> = () => {
     return(
         <Wrapper>
             <SEO title="Contact"/>
+            <Navigation 
+                position="relative"
+                isFull
+                color={Coral}
+                background="white"
+            />
             <Content>
                 <FindMeOn>
                     <FindMeOnSites ref={links}>
