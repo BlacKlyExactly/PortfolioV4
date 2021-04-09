@@ -103,7 +103,6 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
         <Wrapper 
             ref={wrapper} 
             center={center}
-            isDesktop={isDesktop}
         >
             {children}
         </Wrapper>
@@ -123,7 +122,6 @@ type ShowUpProps = {
 
 interface WrapperProps {
     center: boolean,
-    isDesktop: boolean
 }
 
 const Wrapper = styled.div<WrapperProps>`
