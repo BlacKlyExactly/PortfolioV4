@@ -7,9 +7,8 @@ import AniLink from "gatsby-plugin-transition-link/AniLink";
 import HamburgerMenu, { NavSelect } from "./HamburgerMenu";
 import ShowUp, { Direction } from "./ShowUp";
 
-const navSelects: Array<NavSelect> = [
+const navSelects: NavSelect[] = [
     { display: "Portfolio", path: "/portfolio"},
-    { display: "Hire Me!", path: "/hire"},
     { display: "Contact", path: "/contact"}
 ]
 
@@ -109,6 +108,7 @@ const Wrapper = styled.nav<WrapperProps>`
 
     @media screen and (min-width: 1200px){
         height: 7.813vw;
+        padding: 0 5%;
     }
 `;
 
@@ -142,10 +142,6 @@ const Logo = styled.div<SelectProps>`
         background: ${({ color }) => color ? color : "white" };
     }
 
-    @media screen and (min-width: 800px){
-        margin-left: 3.5vw;
-    }
-
     color: ${({ color }) => color ? color : "white" };
 `;
 
@@ -157,15 +153,11 @@ const Selects = styled.ul<SelectsProps>`
     display: flex;
     list-style: none;
     padding: 0;
-    margin: 0;
 
     ${({ isFull }) => !isFull && css`
         @media screen and (min-width: 1150px){
-            width: 75vw;
-        }
-
-        @media screen and (min-width: 1200px){
-            width: 68vw;
+            width: 60vw;
+            margin: 0;
         }
     `}
 `;

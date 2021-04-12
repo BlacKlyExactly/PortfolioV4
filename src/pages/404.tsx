@@ -9,7 +9,7 @@ import { Pink, Coral } from "../assets/styles/colors";
 
 const NotFoundPage: FC<PageProps> = () => (
   <Wrapper>
-      <Navigation isFull={true}/>
+      <Navigation isFull={true} color={Coral}/>
       <SEO title="404"/>
       <h1>404: Not Found</h1>
   </Wrapper>
@@ -21,8 +21,8 @@ const Wrapper = styled.div`
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    color: white;
-    background: linear-gradient(${Pink}, ${Coral});
+    color: ${Coral};
+    background: white;
 `;
 
 export default NotFoundPage;
