@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from "../components/Footer";
+import PageLoader from "../components/PageLoader";
 
 const Layout: FC<LayoutProps> = ({ children }: LayoutProps) => (
     <>  
@@ -13,6 +14,7 @@ const Layout: FC<LayoutProps> = ({ children }: LayoutProps) => (
         </Helmet>
         <ToastContainer />
         <GlobalStyles />
+        <PageLoader/>
         {children}
         <Footer/>
     </>
