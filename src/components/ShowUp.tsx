@@ -5,6 +5,7 @@ import React, {
     useEffect, 
     useRef, 
     forwardRef,
+    useState
 } from "react";
 
 import styled, { css } from "styled-components";
@@ -36,24 +37,50 @@ const getValue = ( direction: Direction, value: number ): number => {
 
 const ShowUp = forwardRef<HTMLElement, ShowUpProps>
 (({ children, delay, duration, value, direction, stagger = 0, scroll = 0, center = false }, ref ) => {
+    const [ isShowed, setShowedState ] = useState<boolean>(false);
+
     const wrapper = useRef<HTMLDivElement>(null);
 
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1150px)'
+    })
+
     useEffect(() => {
-
-        if(!ref?.current || !direction){
-            gsap.set(wrapper.current, { overflow: "visible" });
-            return;
-        }
-
         const elements: Element | HTMLCollection = stagger === 0 ? ref.current : ref.current.children;
 
-        let isShowed: boolean = false;
+        const showElement = () => {
+            if(!ref?.current || !direction || !isDesktopOrLaptop){
+                setVisibility(true);
+                return;
+            }
 
-        const show = () => {
+            setVisibility(false);
+
+            if(scroll === 0){
+                gsap.to(
+                    elements, 
+                    { 
+                        [ getDirection(direction) ]:  0, 
+                        duration, 
+                        delay, 
+                        ease: "expo.out", 
+                        stagger 
+                    }
+                )
+
+                console.log("xD");
+                
+                return;
+            }
+        }
+
+        const showOnScroll = () => {
+            if(!ref.current || scroll === 0) return;
+
             const { y } = ref.current.getBoundingClientRect();
     
             if(window.scrollY > y + scroll && !isShowed) {
-                isShowed = true;
+                setShowedState(true);
 
                 gsap.to(
                     elements, 
@@ -68,36 +95,30 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
             }
         }
 
-        if(scroll === 0){
-            gsap.from(
+        const setVisibility = ( isVisible: boolean ) => {
+            gsap.set(
                 elements, 
                 { 
-                    [ getDirection(direction) ]:  getValue(direction, value), 
-                    duration, 
-                    delay, 
-                    ease: "expo.out", 
-                    stagger 
+                    [ getDirection(direction) ]: isVisible ? 0 : getValue(direction, value), 
+                    stagger, 
+                    opacity: 1 
                 }
             )
-            
-            return;
-        }
-        
-        
-        gsap.set(
-            elements, 
-            { 
-                [ getDirection(direction) ]:  getValue(direction, value) 
-            }
-        );
 
-        window.addEventListener("scroll", show);
-        show();
+            gsap.set(wrapper.current, { overflow: isVisible ? "visible" : "hidden" });
+        }
+    
+        
+        window.addEventListener("resize", showElement);
+        window.addEventListener("scroll", showOnScroll);
+
+        showElement();
 
         return () => {
-            scroll !== 0 && window.removeEventListener("scroll", show);
+            scroll !== 0 && window.removeEventListener("scroll", showOnScroll);
+            window.removeEventListener("resize", showElement);
         }
-    }, [ ])
+    }, [ isDesktopOrLaptop, isShowed ])
 
     return(
         <Wrapper 
@@ -125,13 +146,17 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-    overflow: hidden;
+    overflow: visible;
 
     ${({ center }) => center && css`
         display: flex;
         align-items: center;
         justify-content: center;
     `}
+
+    @media screen and (min-width: 1150px){
+        overflow: hidden;
+    }
 `;
 
 

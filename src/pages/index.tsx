@@ -13,9 +13,6 @@ import useProjects, { Project } from "../hooks/useProjects";
 import { Pink, Coral } from "../assets/styles/colors";
 
 //@ts-ignore
-import * as Waves from "../assets/wave.svg";
-
-//@ts-ignore
 import * as Hero from "../assets/hero.svg";
 
 //@ts-ignore
@@ -380,7 +377,7 @@ const LandingBackground = styled.div`
     width: 100vw;
     height: 99vh;
     background-size: 430%;
-    background-position: 14% 10%;
+    background-position: center;
     overflow: hidden;
 
     .gatsby-image-wrapper{
@@ -435,7 +432,7 @@ const LandingDecorations = styled.span`
 `;
 
 const LandingWaves = styled.div`
-    display: flex;
+    display: none;
     position: absolute;
     bottom: 0%;
     right: 0;
@@ -443,6 +440,7 @@ const LandingWaves = styled.div`
     height: 27%;
 
     @media screen and (min-width: 1150px){
+        display: flex;
         width: 100vw;
         height: 30%;
     }

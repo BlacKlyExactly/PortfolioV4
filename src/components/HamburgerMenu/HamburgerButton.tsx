@@ -51,7 +51,7 @@ const Wrapper = styled.button`
     border: none;
     background: transparent;
     z-index: 90;
-    margin: 0;
+    margin-left: auto;
 
     &:focus{
         outline: none;

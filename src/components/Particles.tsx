@@ -25,6 +25,17 @@ const Particles: FC<ParticlesProps> = ({ blocks, event, opacity }) => {
                 particles.current.addEventListener("mouseleave", () => animate(AnimationType.Hide));
             }
         }
+
+        return () => {
+            if(!particles.current || !event) return;
+
+            switch(event){
+                case ParticlesEvent.Hover: {
+                    particles.current.removeEventListener("mouseenter", () => animate(AnimationType.Show));
+                    particles.current.removeEventListener("mouseleave", () => animate(AnimationType.Hide));
+                }
+            }
+        }
     }, [ ]);
 
     const animate = ( animType: AnimationType ) => {

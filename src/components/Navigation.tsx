@@ -41,34 +41,34 @@ const Navigation: FC<NavigationProps> = ({ isFull, color, position, background, 
                     </Logo>
                 </AniLink>
             </ShowUp>
-                <ShowUp 
+                <HamburgerMenu 
+                    selects={navSelects}
+                    color={color}
+                />
+            <ShowUp 
+                ref={selects} 
+                delay={0.4} 
+                duration={1} 
+                value={250} 
+                direction={toDown} 
+                stagger={0.1}
+            >
+                <Selects 
                     ref={selects} 
-                    delay={0.4} 
-                    duration={1} 
-                    value={250} 
-                    direction={toDown} 
-                    stagger={0.1}
+                    isFull={isFull}
                 >
-                    <HamburgerMenu 
-                        selects={navSelects}
-                        color={color}
-                    />
-                    <Selects 
-                        ref={selects} 
-                        isFull={isFull}
-                    >
-                        {navSelects.map(({ display, path }: NavSelect) => (
-                            <AniLink 
-                                cover 
-                                to={path} 
-                                bg="white" 
-                                key={path}
-                            >
-                                <Select color={color}>{display}</Select>
-                            </AniLink>
-                        ))}
-                    </Selects>
-                </ShowUp>
+                    {navSelects.map(({ display, path }: NavSelect) => (
+                        <AniLink 
+                            cover 
+                            to={path} 
+                            bg="white" 
+                            key={path}
+                        >
+                            <Select color={color}>{display}</Select>
+                        </AniLink>
+                    ))}
+                </Selects>
+            </ShowUp>
         </Wrapper>
     )
 }
@@ -100,15 +100,10 @@ const Wrapper = styled.nav<WrapperProps>`
     z-index: 100;
     padding: 0 10%;
 
-    @media screen and (min-width: 800px){
-        height: 10vw;
-        position: ${({ pos }) => pos || "absolute"};
-        padding: 0 2%;
-    }
-
-    @media screen and (min-width: 1200px){
+    @media screen and (min-width: 1150px){
         height: 7.813vw;
         padding: 0 5%;
+        position: ${({ pos }) => pos || "absolute"};
     }
 `;
 
