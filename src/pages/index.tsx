@@ -289,14 +289,15 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                             </LatestWorksDescription>
                         </LatestWorksField>
                             {projects.slice(0, 3).map(( project: Project ) => (
-                                <LatestWorksField 
-                                    key={project.link}
-                                    onClick={() => project.link && navigate(project.link)}
-                                >
-                                    <LatestWorksImage themeColor={project.color}>
-                                        <img src={project.image.url}/>
-                                    </LatestWorksImage>
-                                </LatestWorksField>
+                                <a href={project.link}>
+                                    <LatestWorksField 
+                                        key={project.link}
+                                    >
+                                        <LatestWorksImage themeColor={project.color}>
+                                            <img src={project.image.url}/>
+                                        </LatestWorksImage>
+                                    </LatestWorksField>
+                                </a>
                             ))}
                     </LatestWorksWrapper>
                 </ShowUp>

@@ -1,30 +1,32 @@
 import React, { FC } from "react";
-import { navigate } from "gatsby";
 import styled from "styled-components";
+
 import { Coral, Darkgray, Pink } from "../assets/styles/colors";
 import Particles, { ParticlesEvent } from "../components/Particles";
 
 const Work: FC<WorkProps> = ({ thumbnail, title, tags, link }) => {
     return(
-        <Wrapper onClick={() => link && navigate(link)}>
-            <Info>
-                <Title>{title}</Title>
-                <Tags>{tags}</Tags>
-            </Info>
-            <Image url={thumbnail}>
-                <Particles 
-                    opacity={0.2} 
-                    event={ParticlesEvent.Hover} 
-                    blocks={[
-                        { top: 100, left: 10, size: 40, speed: 8 },
-                        { top: 110, left: 30, size: 50, speed: 9 },
-                        { top: 160, left: 50, size: 60, speed: 10 },
-                        { top: 130, left: 70, size: 70, speed: 11 },
-                        { top: 130, left: 90, size: 40, speed: 7 },
-                    ]}
-                />
-            </Image>
-        </Wrapper>
+        <a href={link}>
+            <Wrapper>
+                <Info>
+                    <Title>{title}</Title>
+                    <Tags>{tags}</Tags>
+                </Info>
+                <Image url={thumbnail}>
+                    <Particles 
+                        opacity={0.2} 
+                        event={ParticlesEvent.Hover} 
+                        blocks={[
+                            { top: 100, left: 10, size: 40, speed: 8 },
+                            { top: 110, left: 30, size: 50, speed: 9 },
+                            { top: 160, left: 50, size: 60, speed: 10 },
+                            { top: 130, left: 70, size: 70, speed: 11 },
+                            { top: 130, left: 90, size: 40, speed: 7 },
+                        ]}
+                    />
+                </Image>
+            </Wrapper>
+        </a>
     )
 };
 
