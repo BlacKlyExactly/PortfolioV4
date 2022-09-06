@@ -13,6 +13,8 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
     const sliderWrapper = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        handleScroll();
+
         if(!sliderWrapper.current) return;
 
         gsap.from(
@@ -29,10 +31,12 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
 
         window.addEventListener("wheel", handleScroll);
         window.addEventListener("touchmove", handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
         return () => {
             window.removeEventListener("wheel", handleScroll);
-            window.removeEventListener("touchmove   ", handleScroll);
+            window.removeEventListener("touchmove", handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         }
     }, [ ]);
 
@@ -41,7 +45,7 @@ const PageSlider: FC<SliderProps> = ({ slides }) => {
             if(!element.current || isScrolling) return;
 
             const { y } = element.current.getBoundingClientRect();
-            window.scrollY > ( y + window.innerHeight / 2) / 1.5 && setSlide(index);
+            window.scrollY > y && setSlide(index);
         })    
     }
 

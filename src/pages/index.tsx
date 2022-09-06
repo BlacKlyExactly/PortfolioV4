@@ -317,7 +317,7 @@ export const query = graphql`
           }
         }
       }
-      photo: file(name: {eq: "site-image"}) {
+      photo: file(name: {eq: "site-photo"}) {
         childImageSharp {
           fluid(maxHeight: 552, quality: 80) {
               ...GatsbyImageSharpFluid_tracedSVG,
