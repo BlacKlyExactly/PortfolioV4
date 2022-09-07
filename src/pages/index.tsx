@@ -659,6 +659,10 @@ const Photo = styled.div`
     padding-right: 20px;
     animation: ${photo} 2s ease-in-out infinite alternate-reverse;
 
+    img{
+        border: 1px solid lightgray;
+    }
+
     &::before{
       content: "";
       position: absolute;
