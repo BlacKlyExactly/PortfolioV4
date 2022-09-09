@@ -705,6 +705,7 @@ const LatestWorksWrapper = styled.div`
     justify-items: center;
 
     @media screen and (min-width: 1200px){
+        flex-direction: row;
         width: fit-content;
         gap: 20px;
         display: flex;
