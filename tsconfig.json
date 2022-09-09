@@ -20,6 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "skipDefaultLibCheck": true,
+    "types": [ "custom.d.ts" ]
   },
   "include": [
     "src"

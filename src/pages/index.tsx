@@ -278,23 +278,18 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                     center
                 >
                     <LatestWorksWrapper ref={worksGrid}>
-                        <LatestWorksField>
-                            <LatestWorksTitle>Are you interested ?</LatestWorksTitle>
+                        <LatestWorksField style={{ height: "fit-content" }}>
+                            <LatestWorksTitle>Are you interested?</LatestWorksTitle>
                             <LatestWorksDescription>
                                 See some of my latest work! Let's enjoy!
-                                *Pss* If you want to see more, you need navigate to<br/> 
-                                <AniLink cover to="/portfolio" bg="white">
-                                    <u><b> "portfolio"</b></u>
-                                </AniLink> page
+                                *Pss* <br/> If you want to see more, you need navigate to <AniLink cover to="/portfolio" bg="white">portfolio</AniLink> page
                             </LatestWorksDescription>
                         </LatestWorksField>
                             {projects.slice(0, 3).map(( project: Project ) => (
-                                <a href={project.link}>
-                                    <LatestWorksField 
-                                        key={project.link}
-                                    >
+                                <a href={project.link} key={project.link}>
+                                    <LatestWorksField >
                                         <LatestWorksImage themeColor={project.color}>
-                                            <img src={project.image.url}/>
+                                            <img src={project.image.url} alt={project.title}/>
                                         </LatestWorksImage>
                                     </LatestWorksField>
                                 </a>
@@ -704,16 +699,22 @@ const MainSkills = styled.div`
 
 const LatestWorksWrapper = styled.div`
     width: 95%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1.6fr 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     align-content: center;
     justify-items: center;
 
     @media screen and (min-width: 1200px){
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 1.1fr 1fr;
-        grid-gap: 0;
+        width: fit-content;
+        gap: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media screen and (min-width: 1400px){
+        gap: 15px;
     }
 `;
 
@@ -739,6 +740,10 @@ const LatestWorksTitle = styled.div`
     font-weight: 700;
 
     @media screen and (min-width: 1200px){
+        font-size: 40px;
+    }
+
+    @media screen and (min-width: 1400px){
         font-size: 50px;
     }
 `;
@@ -750,7 +755,16 @@ const LatestWorksDescription = styled.div`
     margin-top: 2vw;
     height: 50%;
 
+    a{
+        text-decoration: underline;
+        font-weight: 700;
+    }
+
     @media screen and (min-width: 1200px){
+        font-size: 15px;
+    }
+
+    @media screen and (min-width: 1400px){
         font-size: 18px;
         width: 70%;
     }
@@ -762,8 +776,8 @@ interface LatestWorksImageProps{
 
 const LatestWorksImage = styled.div<LatestWorksImageProps>`
     position: relative;
-    width: 95%;
-    height: 95%;
+    width: 100%;
+    height: 100%;
     cursor: pointer;
 
     &:hover{

@@ -26,7 +26,7 @@ module.exports = {
       I hope you enjoy my work!
     `,
     author: `@BlacKisEverywhere`,
-    siteUrl: "https://blackly-exactly.netlify.app/"
+    siteUrl: "https://blacklyexactly.com"
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -90,5 +90,13 @@ module.exports = {
         functionsOutput: `${__dirname}/functions`,
       },
     },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://www.blacklyexactly.com',
+        sitemap: 'https://www.blacklyexactly.com/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
+     },
   ],
 }

@@ -67,15 +67,13 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
                         stagger 
                     }
                 )
-
-                console.log("xD");
                 
                 return;
             }
         }
 
         const showOnScroll = () => {
-            if(!ref.current || scroll === 0) return;
+            if(!ref.current || scroll === 0 || isShowed) return;
 
             const { y } = ref.current.getBoundingClientRect();
     
@@ -109,14 +107,12 @@ const ShowUp = forwardRef<HTMLElement, ShowUpProps>
         }
     
         
-        window.addEventListener("resize", showElement);
         window.addEventListener("scroll", showOnScroll);
 
         showElement();
 
         return () => {
             scroll !== 0 && window.removeEventListener("scroll", showOnScroll);
-            window.removeEventListener("resize", showElement);
         }
     }, [ isDesktopOrLaptop, isShowed ])
 
