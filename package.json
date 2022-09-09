@@ -14,6 +14,7 @@
     "aws-lambda": "^1.0.6",
     "babel-plugin-styled-components": "^1.11.1",
     "dotenv": "^8.2.0",
+    "fs": "^0.0.1-security",
     "gatsby": "^2.24.61",
     "gatsby-image": "^2.4.19",
     "gatsby-plugin-config": "^1.0.7",
