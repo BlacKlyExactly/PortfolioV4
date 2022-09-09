@@ -13,6 +13,7 @@ const Work: FC<WorkProps> = ({ thumbnail, title, tags, link }) => {
                     <Tags>{tags}</Tags>
                 </Info>
                 <Image url={thumbnail}>
+                    <img src={thumbnail} alt="title"/>
                     <Particles 
                         opacity={0.2} 
                         event={ParticlesEvent.Hover} 
@@ -70,10 +71,17 @@ const Image = styled.div<ImageProps>`
     width: 100%;
     height: 65%;
     border-radius: 25px;
-    background: url(${({ url }) => url});
     background-size: 100%;
     background-position: center;
     transition: 0.2s background-size;
+
+    img{
+        position: relative;
+        object-fit: cover;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+    }
 
     &:hover{
         background-size: 110%;
@@ -88,6 +96,8 @@ const Image = styled.div<ImageProps>`
         position: absolute;
         width: 100%;
         height: 100%;
+        left: 0;
+        top: 0;
         background: linear-gradient(${Pink}, ${Coral});
         opacity: 0;
         border-radius: 25px;

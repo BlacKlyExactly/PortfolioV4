@@ -209,7 +209,7 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps ) => {
                             center
                         >
                             <MainContentDescription ref={mainDescription}>
-                            {data.site.siteMetadata.description}
+                                {data.site.siteMetadata.description}
                             </MainContentDescription>
                         </ShowUp>
                         <ShowUp 
@@ -593,7 +593,7 @@ const Main = styled.main`
   }
 `;
 
-const MainTitle = styled.div`
+const MainTitle = styled.h3`
     font-size: 50px;
     color: ${Pink};
     font-weight: 700;
@@ -617,7 +617,7 @@ const MainContent = styled.div`
     }
 `;
 
-const MainContentDescription = styled.div`
+const MainContentDescription = styled.p`
     font-size: 15px;
     font-weight: 400;
     line-height: 40px;
@@ -735,10 +735,11 @@ const LatestWorksField = styled.div`
     }
 `;
 
-const LatestWorksTitle = styled.div`
+const LatestWorksTitle = styled.h3`
     color: ${Coral};
     font-size: 30px;
     font-weight: 700;
+    margin: 0;
 
     @media screen and (min-width: 1200px){
         font-size: 40px;
@@ -749,7 +750,7 @@ const LatestWorksTitle = styled.div`
     }
 `;
 
-const LatestWorksDescription = styled.div`
+const LatestWorksDescription = styled.p`
     font-size: 15px;
     color: black;
     line-height: 50px;
