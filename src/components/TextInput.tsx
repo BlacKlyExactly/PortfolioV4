@@ -4,10 +4,6 @@ import { Coral } from "../assets/styles/colors";
 import gsap from "gsap";
 
 const TextInput: FC<TextInputProps> = ({ label, placeholder, name, type, setValue, value, width }) => {
-    useEffect(() => {
-
-    }, []); 
-
     const handleInputChange = ( e: ChangeEvent<HTMLInputElement> ) => {
         e.preventDefault();
         setValue(name, e.target.value);
