@@ -1,10 +1,10 @@
-const createProxyMiddleware = require("http-proxy-middleware");
+const createProxyMiddleware = require("http-proxy-middleware")
 
-require('dotenv').config({
+require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
-});
+})
 
-const config = require('gatsby-plugin-config').default;
+const config = require("gatsby-plugin-config").default
 
 module.exports = {
   developMiddleware: app => {
@@ -21,12 +21,10 @@ module.exports = {
   siteMetadata: {
     title: `Black's Portfolio`,
     description: `
-      I'm a Hobbystic Frontend Dev.
-      I create websites from userside and I'm responsible for your expiriences of using websites.
-      I hope you enjoy my work!
+      I'm 19 years old. I'm in the 4th grade IT technical school. I wish to expand my skills as a Frontend developer, and I'm working hard to achieve that
     `,
     author: `@BlacKisEverywhere`,
-    siteUrl: "https://blacklyexactly.com"
+    siteUrl: "https://blacklyexactly.com",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -46,9 +44,9 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /assets/ // See below to configure properly
-        }
-      }
+          include: /assets/, // See below to configure properly
+        },
+      },
     },
     {
       resolve: `gatsby-plugin-webfonts`,
@@ -57,7 +55,7 @@ module.exports = {
           google: [
             {
               family: `Montserrat`,
-              variants: [ '400', '600', '700', '900' ]
+              variants: ["400", "600", "700", "900"],
             },
           ],
         },
@@ -83,7 +81,7 @@ module.exports = {
         preview: false,
       },
     },
-     {
+    {
       resolve: `gatsby-plugin-netlify-functions`,
       options: {
         functionsSrc: `${__dirname}/src/functions`,
@@ -91,12 +89,12 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-robots-txt',
+      resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: 'https://www.blacklyexactly.com',
-        sitemap: 'https://www.blacklyexactly.com/sitemap.xml',
-        policy: [{ userAgent: '*', allow: '/' }],
+        host: "https://www.blacklyexactly.com",
+        sitemap: "https://www.blacklyexactly.com/sitemap.xml",
+        policy: [{ userAgent: "*", allow: "/" }],
       },
-     },
+    },
   ],
 }
