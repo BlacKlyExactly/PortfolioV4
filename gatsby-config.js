@@ -21,7 +21,7 @@ module.exports = {
   siteMetadata: {
     title: `Black's Portfolio`,
     description: `
-      I'm 19 years old. I'm in the 4th grade IT technical school. I wish to expand my skills as a Frontend developer, and I'm working hard to achieve that
+      I'm 20 years old. I'm the graduate of an IT technical school. I wish to expand my skills as a Frontend developer, and I'm working hard to achieve that
     `,
     author: `@BlacKisEverywhere`,
     siteUrl: "https://blacklyexactly.com",
