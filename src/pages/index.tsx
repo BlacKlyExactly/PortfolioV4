@@ -158,7 +158,6 @@ const IndexPage: FC<PageProps<Data>> = ({ data }: IndexProps) => {
             direction={toDown}
           >
             <LandingContentTitle ref={title}>
-              {" "}
               Be <span>AWESOME</span>{" "}
             </LandingContentTitle>
           </ShowUp>
@@ -481,7 +480,7 @@ const LandingContent = styled.div`
   }
 `
 
-const LandingContentTitle = styled.div`
+const LandingContentTitle = styled.h1`
   position: relative;
   font: italic 700 50px "Segoe UI";
   color: white;
@@ -499,8 +498,9 @@ const LandingContentTitle = styled.div`
   }
 `
 
-const LandingContentDescription = styled.div`
+const LandingContentDescription = styled.p`
   font-size: 27px;
+  margin: 0;
   color: white;
 
   span {
@@ -593,7 +593,7 @@ const Main = styled.main`
   }
 `
 
-const MainTitle = styled.h3`
+const MainTitle = styled.h2`
   font-size: 50px;
   color: ${Pink};
   font-weight: 700;
@@ -735,7 +735,7 @@ const LatestWorksField = styled.div`
   }
 `
 
-const LatestWorksTitle = styled.h3`
+const LatestWorksTitle = styled.h2`
   color: ${Coral};
   font-size: 30px;
   font-weight: 700;
