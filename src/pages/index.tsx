@@ -1,5 +1,5 @@
 import React, { FC, useRef, useEffect, RefObject } from "react"
-import { PageProps, graphql, navigate } from "gatsby"
+import { PageProps, graphql } from "gatsby"
 import Wave from "react-wavify"
 
 //@ts-ignore
